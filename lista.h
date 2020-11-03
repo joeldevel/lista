@@ -2,7 +2,7 @@
 #define LISTA_H
 
 #include <stdbool.h>
-
+#include <stdlib.h>
 
 /* ******************************************************************
  *                DEFINICION DE LOS TIPOS DE DATOS
