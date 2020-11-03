@@ -11,7 +11,40 @@ static void prueba_lista_vacia(void) {
     print_test("Prueba lista vacía: ", lista_esta_vacia(lista));
     lista_destruir(lista, NULL);
 }
-
+static void prueba_lista_ver_primero_vacia_es_invalido(void) {
+    printf("INICIO DE PRUEBAS VER PRIMERO EN LISTA VACIA ES INVÁLIDO\n");
+    lista_t *lista = lista_crear();
+    print_test("Prueba ver primero en lista vacia es invalido: ", lista_ver_primero(lista)== NULL);
+    lista_destruir(lista, NULL);
+}
+static void prueba_lista_ver_ultimo_vacia_es_invalido(void) {
+    printf("INICIO DE PRUEBAS VER ULTIMO EN LISTA VACIA ES INVÁLIDO\n");
+    lista_t *lista = lista_crear();
+    print_test("Prueba ver ultimo en lista vacia es invalido: ", lista_ver_ultimo(lista)== NULL);
+    lista_destruir(lista, NULL);
+}
+static void prueba_lista_insertar_primero(void) {
+    printf("INICIO DE PRUEBAS INSERTAR PRIMERO\n");
+    lista_t *lista = lista_crear();
+    char dato = 'z';
+    bool ok = true;
+    ok &= lista_insertar_primero(lista,&dato);
+    ok &= 'z'==*(char*) lista_ver_primero(lista);
+    print_test("Prueba lista insertar primero: ", ok);
+    lista_destruir(lista, NULL);
+}
+static void prueba_lista_borrar_vacia_la_lista(void) {
+    printf("INICIO DE PRUEBAS BORRAR PRIMERO VACÍA LA LISTA\n");
+    lista_t *lista = lista_crear();
+    int dato = 1234;
+    lista_insertar_primero(lista, &dato);
+    bool ok = true;
+    ok &= (1234 == *(int*)lista_ver_primero(lista));
+    ok &= 1234== *(int*)lista_borrar_primero(lista);
+    ok &= (lista_esta_vacia(lista));
+    print_test("Prueba lista borrar primero deja vacía la lista: ", ok);
+    lista_destruir(lista, NULL);
+}
 /* Pruebas para tope lista vacía es inválido. */
 // static void prueba_lista_ver_tope_creada_es_invalido(void) {
 //
@@ -167,6 +200,10 @@ static void prueba_lista_vacia(void) {
 
 void pruebas_lista_estudiante() {
     prueba_lista_vacia();
+    prueba_lista_ver_primero_vacia_es_invalido();
+    prueba_lista_ver_ultimo_vacia_es_invalido();
+    prueba_lista_insertar_primero();
+    prueba_lista_borrar_vacia_la_lista();
     // prueba_alistar_un_elemento();
     // prueba_lista_ver_tope_creada_es_invalido();
     // prueba_alistar_pocos_elementos();

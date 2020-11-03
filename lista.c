@@ -53,7 +53,7 @@ void *lista_borrar_primero(lista_t *lista) {
     if (lista_esta_vacia(lista)) return NULL;
     nodo_t *nodo_aux = crear_nodo(0);
     nodo_aux->siguiente_nodo = lista->primer_elemento;
-    void *p = nodo_aux->dato;
+    void *p = nodo_aux->siguiente_nodo->dato;
     // printf("(valor de p) %d\n",*(int*)p );
     lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
     lista->largo--;
@@ -106,7 +106,7 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
 	free(lista);
 }
 
- //
+ /*
 int main(int argc, char *argv[]) {
     printf("Compila!\n" );
     lista_t * lista = lista_crear();
@@ -141,3 +141,4 @@ int main(int argc, char *argv[]) {
     // free(p);
     return 0;
 }
+*/

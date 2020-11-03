@@ -1,7 +1,7 @@
 #include "lista.h"
 
 #include <stdio.h>
-
+/*
 //
 // Imprimir una lista con iterador externo
 //
@@ -56,3 +56,4 @@ void ejemplo_iteradores() {
 
     lista_destruir(super, NULL);
 }
+*/
