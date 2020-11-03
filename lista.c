@@ -63,8 +63,31 @@ void *lista_borrar_primero(lista_t *lista) {
     return p;
 }
 
-
-
+bool lista_insertar_ultimo(lista_t *lista, void *dato) {
+  nodo_t *nodo = crear_nodo(dato);
+  if (!nodo) return false;
+  if(lista_esta_vacia(lista)) {
+      lista->primer_elemento = nodo;
+      lista->ultimo_elemento = nodo;
+      lista->largo++;
+      return true;
+  }
+  lista->ultimo_elemento->siguiente_nodo = nodo;
+  lista->ultimo_elemento = lista->ultimo_elemento->siguiente_nodo;
+  lista->largo++;
+  return true;
+}
+void *lista_ver_primero(const lista_t *lista) {
+    if (lista_esta_vacia(lista)) return NULL;
+    return lista->primer_elemento->dato;
+}
+void *lista_ver_ultimo(const lista_t *lista) {
+    if (lista_esta_vacia(lista)) return NULL;
+    return lista->ultimo_elemento->dato;
+}
+size_t lista_largo(const lista_t *lista) {
+    return lista->largo;
+}
  //
 int main(int argc, char *argv[]) {
     printf("Compila!\n" );
@@ -72,17 +95,24 @@ int main(int argc, char *argv[]) {
     printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
     // int *d = malloc(sizeof(int));
     int d = 33;
+    int p = 987654;
+    int u = 123456;
     lista_insertar_primero(lista, &d);
     lista_insertar_primero(lista, &d);
-    lista_insertar_primero(lista, &d);
+    lista_insertar_primero(lista, &p);
+    lista_insertar_ultimo(lista, &u);
     // lista_insertar_primero(lista, &d);
     printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
-    printf("largo?: %d\n", lista->largo);
+    printf("largo?: %d\n", lista_largo(lista));
+    printf("ver primero?: %d\n", *(int *)lista_ver_primero(lista));
+    printf("ver ultimo?: %d\n", *(int *)lista_ver_ultimo(lista));
+    lista_borrar_primero(lista);
+    printf("ver primero?: %d\n", *(int *)lista_ver_primero(lista));
     lista_borrar_primero(lista);
     lista_borrar_primero(lista);
     lista_borrar_primero(lista);
     // int *p = (int*)lista_borrar_primero(lista);
-    printf("largo?: %d\n", lista->largo);
+    printf("largo?: %d\n", lista_largo(lista));
 
     // free(lista->primer_elemento->dato);
 
