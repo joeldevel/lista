@@ -9,7 +9,7 @@ static void prueba_lista_vacia(void) {
 
     lista_t *lista = lista_crear();
     print_test("Prueba lista vacía: ", lista_esta_vacia(lista));
-    lista_destruir(lista);
+    lista_destruir(lista, NULL);
 }
 
 /* Pruebas para tope lista vacía es inválido. */

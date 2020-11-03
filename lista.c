@@ -90,7 +90,20 @@ size_t lista_largo(const lista_t *lista) {
 }
 
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
-    while (lista )
+    if (destruir_dato == NULL) {
+       while (lista->primer_elemento) {
+           lista_borrar_primero(lista);
+       } 
+    }
+    else {
+        while (lista->primer_elemento) {
+            destruir_dato(lista->primer_elemento->dato);
+	    lista_borrar_primero(lista);
+	}
+    }
+	free(lista->primer_elemento);
+	free(lista->ultimo_elemento);
+	free(lista);
 }
 
  //
@@ -108,7 +121,7 @@ int main(int argc, char *argv[]) {
     lista_insertar_ultimo(lista, &u);
     // lista_insertar_primero(lista, &d);
     printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
-    printf("largo?: %d\n", lista_largo(lista));
+    printf("largo?: %lu\n", lista_largo(lista));
     printf("ver primero?: %d\n", *(int *)lista_ver_primero(lista));
     printf("ver ultimo?: %d\n", *(int *)lista_ver_ultimo(lista));
     lista_borrar_primero(lista);
@@ -117,15 +130,14 @@ int main(int argc, char *argv[]) {
     lista_borrar_primero(lista);
     lista_borrar_primero(lista);
     // int *p = (int*)lista_borrar_primero(lista);
-    printf("largo?: %d\n", lista_largo(lista));
-
+    printf("largo?: %lu\n", lista_largo(lista));
+    lista_destruir(lista, NULL);
     // free(lista->primer_elemento->dato);
-
-    free(lista->primer_elemento);
     // free(lista->primer_elemento);
-    free(lista->ultimo_elemento);
+    // free(lista->primer_elemento);
     // free(lista->ultimo_elemento);
-    free(lista);
+    // free(lista->ultimo_elemento);
+    //free(lista);
     // free(p);
     return 0;
 }
