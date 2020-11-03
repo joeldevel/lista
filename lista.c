@@ -52,13 +52,14 @@ bool lista_insertar_primero(lista_t *lista, void *dato) {
 void *lista_borrar_primero(lista_t *lista) {
     if (lista_esta_vacia(lista)) return NULL;
     nodo_t *nodo_aux = crear_nodo(0);
-    nodo_aux = lista->primer_elemento;
+    nodo_aux->siguiente_nodo = lista->primer_elemento;
     void *p = nodo_aux->dato;
-    printf("(valor de p) %d\n",*(int*)p );
+    // printf("(valor de p) %d\n",*(int*)p );
     lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
     lista->largo--;
     if (lista_esta_vacia(lista)) lista->ultimo_elemento = NULL;
-    free( nodo_aux);
+    free(nodo_aux->siguiente_nodo);
+    free(nodo_aux);
     return p;
 }
 
@@ -69,15 +70,20 @@ int main(int argc, char *argv[]) {
     printf("Compila!\n" );
     lista_t * lista = lista_crear();
     printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
-    int *d = malloc(sizeof(int));
-    d = 33;
-    lista_insertar_primero(lista, d);
-    lista_insertar_primero(lista, d);
-    lista_insertar_primero(lista, d);
+    // int *d = malloc(sizeof(int));
+    int d = 33;
+    lista_insertar_primero(lista, &d);
+    lista_insertar_primero(lista, &d);
+    lista_insertar_primero(lista, &d);
     // lista_insertar_primero(lista, &d);
     printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
     printf("largo?: %d\n", lista->largo);
     lista_borrar_primero(lista);
+    lista_borrar_primero(lista);
+    lista_borrar_primero(lista);
+    // int *p = (int*)lista_borrar_primero(lista);
+    printf("largo?: %d\n", lista->largo);
+
     // free(lista->primer_elemento->dato);
 
     free(lista->primer_elemento);
@@ -85,6 +91,6 @@ int main(int argc, char *argv[]) {
     free(lista->ultimo_elemento);
     // free(lista->ultimo_elemento);
     free(lista);
-    // free(d);
+    // free(p);
     return 0;
 }
