@@ -88,6 +88,11 @@ void *lista_ver_ultimo(const lista_t *lista) {
 size_t lista_largo(const lista_t *lista) {
     return lista->largo;
 }
+
+void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
+    while (lista )
+}
+
  //
 int main(int argc, char *argv[]) {
     printf("Compila!\n" );
