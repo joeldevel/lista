@@ -6,15 +6,17 @@
 
 /* Pruebas para una lista vacía. */
 static void prueba_lista_vacia(void) {
-
-    printf("INICIO DE PRUEBAS CREAR LISTA VACIA\n");
+    printf("INICIO DE PRUEBAS LISTA VACIA\n");
 
     lista_t *lista = lista_crear();
-    print_test("Prueba lista vacía: ", lista_esta_vacia(lista));
+    print_test("Prueba la lista est vacía: ", lista_esta_vacia(lista));
+    print_test("Borrar primero es NULL",NULL==lista_borrar_primero(lista));
+    print_test("Ver primero es NULL",NULL==lista_ver_primero(lista));
+    print_test("Ver ultimo es NULL",NULL==lista_ver_ultimo(lista));
     lista_destruir(lista, NULL);
 }
 static void prueba_lista_ver_primero_vacia_es_invalido(void) {
-    printf("INICIO DE PRUEBAS VER PRIMERO EN LISTA VACIA ES INVÁLIDO\n");
+    printf("INICIO DE PRUEBAS VER PRIMERO EN LISTA VACÍA ES INVÁLIDO\n");
     lista_t *lista = lista_crear();
     print_test("Prueba ver primero en lista vacia es invalido: ", lista_ver_primero(lista)== NULL);
     lista_destruir(lista, NULL);
