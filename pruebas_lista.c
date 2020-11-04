@@ -1,6 +1,6 @@
 #include "lista.h"
 #include "testing.h"
-//#include "pila.h"
+#include "pila.h"
 //#include "cola.h"
 #include<stdio.h>
 
@@ -79,12 +79,69 @@ static void prueba_lista_se_puede_insertar_null(void) {
     
 }
 // wrapper 
+void pila_destruir_wrapper(void *elem) {
+    pila_destruir(elem);
+}
 static void prueba_lista_de_pilas(void) {
     printf("INICIO DE PRUEBAS LISTA DE PILAS\n");
 
     lista_t *l = lista_crear();
+    //crear tres pilas
+    pila_t *pi1 = pila_crear();
+    pila_t *pi2 = pila_crear();
+    pila_t *pi3 = pila_crear();
+    // llenarlas con algo
+    int tam_nums = 4;
+    int tam_chars = 3;
+    int tam_bools = 4;
+    int nums[] = {10,20,30,40};
+    char chars[] = {'z','f','n'};
+    bool bools[] = {true, true, false, true};
+    bool ok = true;
+    for (int i=0; i < tam_nums; i++) {
+    	ok &= pila_apilar(pi1, &nums[i]);
+    }
+    print_test("Se insertaron en pi1 ", ok);
+    for (int i=0; i < tam_chars; i++) {
+    	ok &= pila_apilar(pi2, &chars[i]);
+    }
+    print_test("Se insertaron en pi2 ", ok);
+    for (int i=0; i < tam_bools; i++) {
+    	ok &= pila_apilar(pi3, &bools[i]);
+    }
+    print_test("Se insertaron en pi3 ", ok);
+    // insertar 2 primero y una ultimo
 
-    lista_destruir(l,NULL);
+    ok &= lista_insertar_primero(l, pi1);
+    print_test("lista_insertar_primero pi1 ", ok);
+    ok &= lista_insertar_primero(l, pi2);
+    print_test("lista_insertar_primero pi2 ", ok);
+    ok &= lista_insertar_ultimo(l, pi3);
+    print_test("lista_insertar_ultimo pi3 ", ok);
+    // sacarlas y ver si coinciden los datos
+    pila_t *paux = lista_borrar_primero(l); 
+    for (int i=0; i < tam_chars; i++) {
+    	ok &= (chars[tam_chars-i-1]==*(char*)pila_ver_tope(paux));
+	pila_desapilar(paux);
+    }
+    print_test("lista_borrar_primero devuelve pi2", ok);
+    //pila_destruir(paux);
+    paux = lista_borrar_primero(l); 
+    for (int i=0; i < tam_nums; i++) {
+    	ok &= (nums[tam_nums-i-1]==*(int*)pila_ver_tope(paux));
+	pila_desapilar(paux);
+    }
+    print_test("lista_borrar_primero devuelve pi1", ok);
+    pila_destruir(paux);
+    paux = lista_borrar_primero(l); 
+    for (int i=0; i < tam_bools; i++) {
+    	ok &= (bools[tam_bools-i-1]==*(bool*)pila_ver_tope(paux));
+	pila_desapilar(paux);
+    }
+    print_test("lista_borrar_primero devuelve pi3", ok);
+    pila_destruir(paux);
+
+    lista_destruir(l, NULL);
     
 }
 /* Pruebas para tope lista vacía es inválido. */
