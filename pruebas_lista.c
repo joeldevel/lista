@@ -1,5 +1,7 @@
 #include "lista.h"
 #include "testing.h"
+//#include "pila.h"
+//#include "cola.h"
 #include<stdio.h>
 
 /* Pruebas para una lista vacía. */
@@ -44,6 +46,44 @@ static void prueba_lista_borrar_vacia_la_lista(void) {
     ok &= (lista_esta_vacia(lista));
     print_test("Prueba lista borrar primero deja vacía la lista: ", ok);
     lista_destruir(lista, NULL);
+}
+static void prueba_lista_volumen(void) {
+    printf("INICIO DE PRUEBAS VOLUMEN\n");
+    lista_t *lista = lista_crear();
+    int M = 1000;
+    int e[M];
+    bool ok = true;
+    for (int i=0; i<M; i++) {
+        e[i] = i;
+        ok &= lista_insertar_primero(lista, &e[i]);
+    }
+    print_test("Se insertaron los elementos: ", ok);
+
+    for (int i=0; i<M; i++) {
+        ok &= ((M-1-i)== *(int*)lista_borrar_primero(lista));
+    }
+    print_test("Los elementos estan en orden correcto: ", ok);
+    lista_destruir(lista,NULL);
+}
+static void prueba_lista_se_puede_insertar_null(void) { 
+    printf("INICIO DE PRUEBAS SE PUEDE INSERTAR NULL\n");
+
+    lista_t *lista = lista_crear();
+    bool ok = lista_insertar_ultimo(lista, NULL);
+    print_test("Se inserto el elemento ", ok);
+    print_test("La lista NO esta vacia despues de insertar NULL ",!lista_esta_vacia(lista));
+    print_test("El elemeno es NULL ", NULL==lista_ver_ultimo(lista));
+    lista_destruir(lista, NULL);
+    
+}
+// wrapper 
+static void prueba_lista_de_pilas(void) {
+    printf("INICIO DE PRUEBAS LISTA DE PILAS\n");
+
+    lista_t *l = lista_crear();
+
+    lista_destruir(l,NULL);
+    
 }
 /* Pruebas para tope lista vacía es inválido. */
 // static void prueba_lista_ver_tope_creada_es_invalido(void) {
@@ -204,6 +244,9 @@ void pruebas_lista_estudiante() {
     prueba_lista_ver_ultimo_vacia_es_invalido();
     prueba_lista_insertar_primero();
     prueba_lista_borrar_vacia_la_lista();
+    prueba_lista_volumen();
+    prueba_lista_se_puede_insertar_null();
+    prueba_lista_de_pilas();
     // prueba_alistar_un_elemento();
     // prueba_lista_ver_tope_creada_es_invalido();
     // prueba_alistar_pocos_elementos();
