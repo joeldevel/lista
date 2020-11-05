@@ -146,17 +146,28 @@ static void prueba_lista_de_pilas(void) {
 }
 static void prueba_lista_iterador_interno(void) {
     printf("INICIO DE PRUEBAS ITERADOR INTERNO\n");
-    bool imprimir_un_item(void *elemento, void *extra) {
+    // bool imprimir_un_item(void *elemento, void *extra) {
+    //     // Sabemos que ‘extra’ es un entero, por tanto le podemos hacer un cast.
+    //     int *contador = extra;
+    //     printf("%d. %s\n", ++(*contador), (char *) elemento);
+    //     return true;  // seguir iterando
+    // }
+    bool imprimir_un_entero(void *elemento, void *extra) {
         // Sabemos que ‘extra’ es un entero, por tanto le podemos hacer un cast.
         int *contador = extra;
-        printf("%d. %s\n", ++(*contador), (char *) elemento);
+        printf("%d. %d\n", ++(*contador), *(int *) elemento);
         return true;  // seguir iterando
     }
 
-    void imprimir_iter_interno(lista_t *lista) {
+    // void imprimir_iter_interno(lista_t *lista) {
+    //     int num_items = 0;
+    //     lista_iterar(lista, imprimir_un_item, &num_items);
+    //     printf("Tengo que comprar %d ítems\n", num_items);
+    // }
+    void imprimir_iter_interno_numeros(lista_t *lista) {
         int num_items = 0;
-        lista_iterar(lista, imprimir_un_item, &num_items);
-        printf("Tengo que comprar %d ítems\n", num_items);
+        lista_iterar(lista, imprimir_un_entero, &num_items);
+        printf("cantidad de elmentos en lista %d \n", num_items);
     }
     lista_t *super = lista_crear();
 
@@ -165,7 +176,14 @@ static void prueba_lista_iterador_interno(void) {
     lista_insertar_ultimo(super, "pan");
     lista_insertar_ultimo(super, "mermelada");
 
-    imprimir_iter_interno(super);
+    lista_t * nums = lista_crear();
+    int n[] = {10,20,340,39};
+    lista_insertar_ultimo(nums, &n[0]);
+    lista_insertar_ultimo(nums, &n[1]);
+    lista_insertar_ultimo(nums, &n[2]);
+    lista_insertar_ultimo(nums, &n[3]);
+    imprimir_iter_interno_numeros(nums);
+    lista_destruir(nums, NULL);
 
     lista_destruir(super, NULL);
 
