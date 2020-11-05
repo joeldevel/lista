@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct nodo {
-    void *dato;
-    struct nodo *siguiente_nodo;
-} nodo_t;
+
 typedef struct lista {
     struct nodo *primer_elemento;
     struct nodo *ultimo_elemento;
@@ -19,7 +16,7 @@ nodo_t *crear_nodo(void *valor) {
     nodo->dato = valor;
     nodo->siguiente_nodo = NULL;
     return nodo;
-}
+};
 /* *****************************************************************
  *                    PRIMITIVAS DE LA LISTA
  * *****************************************************************/
@@ -115,3 +112,39 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *a
     }
     free(n);
 }
+
+/* *****************************************************************
+ *                    PRIMITIVAS DEL ITERADOR EXTERNO
+ * *****************************************************************/
+lista_iter_t *lista_iter_crear(lista_t *lista) {
+    printf("Entrando a lista_iter_crear\n");
+    lista_iter_t *iter = malloc(sizeof(lista_iter_t));
+    if (!iter) return NULL;
+    iter->actual = lista->primer_elemento;
+    iter->anterior = NULL;
+    printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
+    return iter;
+}
+/*
+int main() {
+  printf("compila\n");
+
+
+  printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
+
+  lista_t * nums = lista_crear();
+  int n[] = {10,20,340,39};
+  lista_insertar_ultimo(nums, &n[0]);
+  lista_insertar_ultimo(nums, &n[1]);
+  lista_insertar_ultimo(nums, &n[2]);
+  lista_insertar_ultimo(nums, &n[3]);
+
+  lista_iter_t *iter = lista_iter_crear(nums);
+  // printf("iter es %p\n", iter);
+  int ok = n[0] == *(int *)iter->actual->dato;
+  printf("iter->actual->dato= %d\n", *(int *)iter->actual->dato);
+  printf("El iter accede a primer elemento de lista %d\n", ok);
+  lista_destruir(nums, NULL);
+  return 0;
+}
+*/

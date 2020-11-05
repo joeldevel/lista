@@ -10,12 +10,22 @@
 
 /* La lista está planteada como una lista de punteros genéricos. */
 
-struct lista;
 typedef struct lista lista_t;
 
+/* Iterador externo. */
+// typedef struct lista_iter lista_iter_t;
+// Iterador externo
+typedef struct nodo {
+    void *dato;
+    struct nodo *siguiente_nodo;
+} nodo_t;
+typedef struct lista_iter {
+  struct nodo *actual;
+  struct nodo *anterior;
+} lista_iter_t;
 
 /* ******************************************************************
- *                    PRIMITIVAS DE LA PILA
+ *                    PRIMITIVAS DE LA LISTA
  * *****************************************************************/
 
 // Crea una lista.
@@ -68,7 +78,27 @@ size_t lista_largo(const lista_t *lista);
 // Post: se eliminaron todos los elementos de la lista.
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *));
 
+// Recorre la lista y aplica visitar a cada dato de la misma
 void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra);
+
+/* ******************************************************************
+ *                    PRIMITIVAS DEL ITERADOR EXTERNO
+ * *****************************************************************/
+ lista_iter_t *lista_iter_crear(lista_t *lista);
+
+ bool lista_iter_avanzar(lista_iter_t *iter);
+
+ void *lista_iter_ver_actual(const lista_iter_t *iter);
+
+ bool lista_iter_al_final(const lista_iter_t *iter);
+
+ void lista_iter_destruir(lista_iter_t *iter);
+
+ bool lista_iter_insertar(lista_iter_t *iter, void *dato);
+
+ void *lista_iter_borrar(lista_iter_t *iter);
+
+
 
 /* *****************************************************************
  *                      PRUEBAS UNITARIAS

@@ -4,6 +4,15 @@
 //#include "cola.h"
 #include<stdio.h>
 
+// lista_iter_t *lista_iter_crear(lista_t *lista) {
+//     printf("Entrando a lista_iter_crear\n");
+//     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
+//     if (!iter) return NULL;
+//     iter->actual = lista->primer_elemento;
+//     iter->anterior = NULL;
+//     printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
+//     return iter;
+// }
 /* Pruebas para una lista vacía. */
 static void prueba_lista_vacia(void) {
     printf("INICIO DE PRUEBAS LISTA VACIA\n");
@@ -188,6 +197,22 @@ static void prueba_lista_iterador_interno(void) {
     lista_destruir(super, NULL);
 
 }
+static void prueba_lista_iterador_externo(void) {
+  printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
+
+  lista_t * nums = lista_crear();
+  int n[] = {10,20,340,39};
+  lista_insertar_ultimo(nums, &n[0]);
+  lista_insertar_ultimo(nums, &n[1]);
+  lista_insertar_ultimo(nums, &n[2]);
+  lista_insertar_ultimo(nums, &n[3]);
+
+  lista_iter_t * iter = lista_iter_crear(nums);
+  // printf("iter es %p\n", iter);
+  bool ok = n[0] == *(int *)iter->actual->dato;
+  print_test("El iter accede a primer elemento de lista ", ok);
+  lista_destruir(nums, NULL);
+}
 
 void pruebas_lista_estudiante() {
     prueba_lista_vacia();
@@ -199,6 +224,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
     prueba_lista_iterador_interno();
+    prueba_lista_iterador_externo();
 }
 
 
