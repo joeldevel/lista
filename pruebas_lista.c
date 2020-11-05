@@ -4,15 +4,7 @@
 //#include "cola.h"
 #include<stdio.h>
 
-// lista_iter_t *lista_iter_crear(lista_t *lista) {
-//     printf("Entrando a lista_iter_crear\n");
-//     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
-//     if (!iter) return NULL;
-//     iter->actual = lista->primer_elemento;
-//     iter->anterior = NULL;
-//     printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
-//     return iter;
-// }
+
 /* Pruebas para una lista vacía. */
 static void prueba_lista_vacia(void) {
     printf("INICIO DE PRUEBAS LISTA VACIA\n");
@@ -209,9 +201,19 @@ static void prueba_lista_iterador_externo(void) {
 
   lista_iter_t * iter = lista_iter_crear(nums);
   // printf("iter es %p\n", iter);
-  bool ok = n[0] == *(int *)iter->actual->dato;
+  bool ok = n[0] == *(int *)lista_iter_ver_actual(iter);
   print_test("El iter accede a primer elemento de lista ", ok);
+  print_test("Lista iter NO al final, antes de ciclo ", !lista_iter_al_final(iter));
+  int i = 0;
+  while(!lista_iter_al_final(iter)) {
+     ok = n[i] == *(int *)lista_iter_ver_actual(iter);
+     print_test("El iter accede al elemento de la lista", ok);
+     print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
+     i++;
+  }
+  print_test("Lista iter al final ", lista_iter_al_final(iter));
   lista_destruir(nums, NULL);
+  lista_iter_destruir(iter);
 }
 
 void pruebas_lista_estudiante() {

@@ -117,13 +117,28 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *a
  *                    PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
 lista_iter_t *lista_iter_crear(lista_t *lista) {
-    printf("Entrando a lista_iter_crear\n");
+    // printf("Entrando a lista_iter_crear\n");
     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
     if (!iter) return NULL;
     iter->actual = lista->primer_elemento;
     iter->anterior = NULL;
-    printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
+    // printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
     return iter;
+}
+void *lista_iter_ver_actual(const lista_iter_t *iter) {
+  return iter->actual->dato;
+}
+void lista_iter_destruir(lista_iter_t *iter) {
+    free(iter);
+}
+bool lista_iter_avanzar(lista_iter_t *iter) {
+    if (iter->actual == NULL) return false;
+    iter->anterior = iter->actual;
+    iter->actual = iter->actual->siguiente_nodo;
+    return true;
+}
+bool lista_iter_al_final(const lista_iter_t *iter) {
+  return iter->actual == NULL;
 }
 /*
 int main() {
