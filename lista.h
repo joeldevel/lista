@@ -68,6 +68,8 @@ size_t lista_largo(const lista_t *lista);
 // Post: se eliminaron todos los elementos de la lista.
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *));
 
+void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra);
+
 /* *****************************************************************
  *                      PRUEBAS UNITARIAS
  * *****************************************************************/

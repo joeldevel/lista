@@ -93,7 +93,7 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
     if (destruir_dato == NULL) {
        while (lista->primer_elemento) {
            lista_borrar_primero(lista);
-       } 
+       }
     }
     else {
         while (lista->primer_elemento) {
@@ -106,39 +106,12 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
 	free(lista);
 }
 
- /*
-int main(int argc, char *argv[]) {
-    printf("Compila!\n" );
-    lista_t * lista = lista_crear();
-    printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
-    // int *d = malloc(sizeof(int));
-    int d = 33;
-    int p = 987654;
-    int u = 123456;
-    lista_insertar_primero(lista, &d);
-    lista_insertar_primero(lista, &d);
-    lista_insertar_primero(lista, &p);
-    lista_insertar_ultimo(lista, &u);
-    // lista_insertar_primero(lista, &d);
-    printf("La lista esta vacia?: %d\n", lista_esta_vacia(lista));
-    printf("largo?: %lu\n", lista_largo(lista));
-    printf("ver primero?: %d\n", *(int *)lista_ver_primero(lista));
-    printf("ver ultimo?: %d\n", *(int *)lista_ver_ultimo(lista));
-    lista_borrar_primero(lista);
-    printf("ver primero?: %d\n", *(int *)lista_ver_primero(lista));
-    lista_borrar_primero(lista);
-    lista_borrar_primero(lista);
-    lista_borrar_primero(lista);
-    // int *p = (int*)lista_borrar_primero(lista);
-    printf("largo?: %lu\n", lista_largo(lista));
-    lista_destruir(lista, NULL);
-    // free(lista->primer_elemento->dato);
-    // free(lista->primer_elemento);
-    // free(lista->primer_elemento);
-    // free(lista->ultimo_elemento);
-    // free(lista->ultimo_elemento);
-    //free(lista);
-    // free(p);
-    return 0;
+// El iterador
+void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *alpha) {
+    nodo_t * n = lista->primer_elemento;
+    while (n) {
+      visitar(n->dato,alpha);
+      n = n->siguiente_nodo;
+    }
+    free(n);
 }
-*/

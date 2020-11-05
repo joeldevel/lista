@@ -67,7 +67,7 @@ static void prueba_lista_volumen(void) {
     print_test("Los elementos estan en orden correcto: ", ok);
     lista_destruir(lista,NULL);
 }
-static void prueba_lista_se_puede_insertar_null(void) { 
+static void prueba_lista_se_puede_insertar_null(void) {
     printf("INICIO DE PRUEBAS SE PUEDE INSERTAR NULL\n");
 
     lista_t *lista = lista_crear();
@@ -76,9 +76,9 @@ static void prueba_lista_se_puede_insertar_null(void) {
     print_test("La lista NO esta vacia despues de insertar NULL ",!lista_esta_vacia(lista));
     print_test("El elemeno es NULL ", NULL==lista_ver_ultimo(lista));
     lista_destruir(lista, NULL);
-    
+
 }
-// wrapper 
+// wrapper
 void pila_destruir_wrapper(void *elem) {
     pila_destruir(elem);
 }
@@ -119,21 +119,21 @@ static void prueba_lista_de_pilas(void) {
     ok &= lista_insertar_ultimo(l, pi3);
     print_test("lista_insertar_ultimo pi3 ", ok);
     // sacarlas y ver si coinciden los datos
-    pila_t *paux = lista_borrar_primero(l); 
+    pila_t *paux = lista_borrar_primero(l);
     for (int i=0; i < tam_chars; i++) {
-    	ok &= (chars[tam_chars-i-1]==*(char*)pila_ver_tope(paux));
-	pila_desapilar(paux);
+    	 ok &= (chars[tam_chars-i-1]==*(char*)pila_ver_tope(paux));
+	     pila_desapilar(paux);
     }
     print_test("lista_borrar_primero devuelve pi2", ok);
-    //pila_destruir(paux);
-    paux = lista_borrar_primero(l); 
+    pila_destruir(paux);
+    paux = lista_borrar_primero(l);
     for (int i=0; i < tam_nums; i++) {
     	ok &= (nums[tam_nums-i-1]==*(int*)pila_ver_tope(paux));
 	pila_desapilar(paux);
     }
     print_test("lista_borrar_primero devuelve pi1", ok);
     pila_destruir(paux);
-    paux = lista_borrar_primero(l); 
+    paux = lista_borrar_primero(l);
     for (int i=0; i < tam_bools; i++) {
     	ok &= (bools[tam_bools-i-1]==*(bool*)pila_ver_tope(paux));
 	pila_desapilar(paux);
@@ -142,160 +142,34 @@ static void prueba_lista_de_pilas(void) {
     pila_destruir(paux);
 
     lista_destruir(l, NULL);
-    
+
 }
-/* Pruebas para tope lista vacía es inválido. */
-// static void prueba_lista_ver_tope_creada_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS VER TOPE EN LISTA VACÍA ES INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     print_test("Prueba lista ver tope en lista recién creada es inválido: ", lista_ver_tope(lista)==NULL);
-//     lista_destruir(lista);
-// }
+static void prueba_lista_iterador_interno(void) {
+    printf("INICIO DE PRUEBAS ITERADOR INTERNO\n");
+    bool imprimir_un_item(void *elemento, void *extra) {
+        // Sabemos que ‘extra’ es un entero, por tanto le podemos hacer un cast.
+        int *contador = extra;
+        printf("%d. %s\n", ++(*contador), (char *) elemento);
+        return true;  // seguir iterando
+    }
 
-/* Pruebas para alistar un elemento. */
-// static void prueba_alistar_un_elemento(void) {
-//
-//     printf("INICIO DE PRUEBAS ALISTAR UN ELEMENTO\n");
-//
-//     lista_t *lista = lista_crear();
-//
-//     char elemento = 'A';
-//
-//     bool ok = lista_alistar(lista, &elemento);
-//     print_test("Se puede alistar un elemento", ok);
-//
-//     int tope = *(char*)lista_ver_tope(lista);
-//     printf("lo que vuelve de lista_ver_tope= %c\n", tope );
-//
-//     lista_destruir(lista);
-// }
+    void imprimir_iter_interno(lista_t *lista) {
+        int num_items = 0;
+        lista_iterar(lista, imprimir_un_item, &num_items);
+        printf("Tengo que comprar %d ítems\n", num_items);
+    }
+    lista_t *super = lista_crear();
 
-/* Pruebas para alistar pocos elementos. */
-// static void prueba_alistar_pocos_elementos(void) {
-//
-//     printf("INICIO DE PRUEBAS ALISTAR POCOS ELEMENTOS\n");
-//
-//     lista_t *lista = lista_crear();
-//     char elementos[] = {'A','b','c', 'F','X'};
-//     int tam = 5;
-//     bool ok = true;
-//     for(int i=0; i < tam; i++) {
-//         lista_alistar(lista, &elementos[i]);
-//         ok &= (elementos[i]==*(char*)lista_ver_tope(lista));
-//     }
-//
-//     print_test("se pudieron alistar todos los elementos", ok);
-//
-//     lista_destruir(lista);
-// }
+    lista_insertar_ultimo(super, "leche");
+    lista_insertar_ultimo(super, "huevos");
+    lista_insertar_ultimo(super, "pan");
+    lista_insertar_ultimo(super, "mermelada");
 
-/*Se pueden desalistar los elementos y se cumple FIFO*/
-// static void prueba_lista_desalistar(void) {
-//
-//     printf("INICIO DE PRUEBAS DESALISTAR\n");
-//
-//     lista_t *lista = lista_crear();
-//     int valores[] = {11,22,33,44,55,66,77,88,99};
-//     int tam = 9;
-//     for (int i = 0; i < tam; i++) {
-//         lista_alistar(lista, &valores[i]);
-//     }
-//
-//     bool ok = true;
-//     for (int i = 0; i < tam; i++) {
-//       ok &= (valores[tam-i-1]==*(int*)lista_desalistar(lista));
-//     }
-//     print_test("se pudieron desalistar todos los elementos", ok);
-//
-//     lista_destruir(lista);
-// }
+    imprimir_iter_interno(super);
 
-/* Pruebas de la lista al trabajar con un volumen grande de elementos */
-// static void prueba_lista_volumen(void) {
-//
-//     printf("INICIO DE PRUEBAS VOLUMEN\n");
-//
-//     lista_t *lista = lista_crear();
-//
-//     int tam = 1000;
-//     int el[tam];
-//     for (int i = 0; i< tam; i++) {
-//       el[i] = i;
-//     }
-//     bool ok = true;
-//     for (int i = 0; i < tam; i++) {
-//         // Si algun elemento no se pudo guardar correctamente, ok sera false
-//         ok &= lista_alistar(lista, &el[i]);
-//     }
-//     print_test("se pudieron alistar todos los elementos", ok);
-//
-//     // desalistarlos
-//     ok = true;
-//     for (int i = 0; i < tam; i++) {
-//         ok &= (tam-i-1==*(int*)lista_desalistar(lista));
-//     }
-//     print_test("se pudieron desalistar todos los elementos", ok);
-//
-//     lista_destruir(lista);
-// }
-// static void prueba_lista_desalistar_vacia_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS DESALISTAR LISTA VACÍA ES INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     print_test("Prueba lista vacía: ", lista_esta_vacia(lista));
-//     print_test("Prueba desalistar vacía es inválido", lista_desalistar(lista)==NULL);
-//     lista_destruir(lista);
-// }
-//
-// static void prueba_lista_desalistar_despues_de_alistar_y_desalistar_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS DESALISTAR DESPUES DE DESALISTAR INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     int valores[] = {11,22,33,44,55,66,77,88,99};
-//     int cant_valores = 9;
-//     for(int i = 0; i< cant_valores; i++) {
-//         lista_alistar(lista, &valores[i]);
-//     }
-//     for( int i = 0; i< cant_valores;i++) {
-//         lista_desalistar(lista);
-//     }
-//     print_test("Prueba desalistar despues de alistar y vaciar es inválido", lista_desalistar(lista)==NULL);
-//
-//     lista_destruir(lista);
-// }
-//
-//
-// static void prueba_lista_ver_tope_despues_de_alistar_y_desalistar_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS VER TOPE DESPUES DE DESALISTAR INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     int valores[] = {11,22,33,44,55,66,77,88,99};
-//     int cant_valores = 9;
-//     for(int i = 0; i< cant_valores; i++) {
-//       lista_alistar(lista, &valores[i]);
-//     }
-//     for( int i = 0; i< cant_valores;i++) {
-//         lista_desalistar(lista);
-//     }
-//     print_test("Prueba ver tope despues de alistar y vaciar es invalido", lista_desalistar(lista)==NULL);
-//
-//     lista_destruir(lista);
-// }
+    lista_destruir(super, NULL);
 
-/* Se puede alistar NULL */
-// static void prueba_lista_alistar_null() {
-//
-//     printf("INICIO DE PRUEBAS ALISTAR NULL ES VÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     print_test("Prueba se puede alistar NULL", lista_alistar(lista, NULL));
-//     lista_destruir(lista);
-// }
+}
 
 void pruebas_lista_estudiante() {
     prueba_lista_vacia();
@@ -306,15 +180,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_volumen();
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
-    // prueba_alistar_un_elemento();
-    // prueba_lista_ver_tope_creada_es_invalido();
-    // prueba_alistar_pocos_elementos();
-    // prueba_lista_desalistar();
-    // prueba_lista_volumen();
-    // prueba_lista_desalistar_vacia_es_invalido();
-    // prueba_lista_desalistar_despues_de_alistar_y_desalistar_es_invalido();
-    // prueba_lista_ver_tope_despues_de_alistar_y_desalistar_es_invalido();
-    // prueba_lista_alistar_null();
+    prueba_lista_iterador_interno();
 }
 
 
