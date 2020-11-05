@@ -6,7 +6,7 @@
 typedef struct lista {
     struct nodo *primer_elemento;
     struct nodo *ultimo_elemento;
-    size_t largo;
+    size_t *largo;
 } lista_t;
 
 // funcion auxiliar
@@ -83,7 +83,7 @@ void *lista_ver_ultimo(const lista_t *lista) {
     return lista->ultimo_elemento->dato;
 }
 size_t lista_largo(const lista_t *lista) {
-    return lista->largo;
+    return (size_t)lista->largo/(sizeof(size_t));
 }
 
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
@@ -123,10 +123,15 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     iter->actual = lista->primer_elemento;
     iter->anterior = NULL;
     // printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
+    iter->tam_lista = lista->largo;
+    printf("###tam y largo son iguales %d\n",iter->tam_lista==lista->largo);
     return iter;
 }
+size_t lista_iter_largo(const lista_iter_t * iter) {
+    return (size_t)iter->tam_lista/(sizeof(size_t));
+}
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
-  return iter->actual->dato;
+    return iter->actual->dato;
 }
 void lista_iter_destruir(lista_iter_t *iter) {
     free(iter);
@@ -139,6 +144,30 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
 }
 bool lista_iter_al_final(const lista_iter_t *iter) {
   return iter->actual == NULL;
+}
+bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
+    nodo_t * nodo_aux = crear_nodo(dato);
+    // lista vacia
+    if (iter->anterior == NULL && iter->actual == NULL) {
+          iter->actual = nodo_aux;
+          iter->tam_lista++;
+          printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+          return true;
+    }
+    // un solo elemento en lista
+    if (iter->actual != NULL && iter->anterior==NULL) {
+      nodo_aux->siguiente_nodo = iter->actual;
+      iter->actual = nodo_aux;
+      iter->tam_lista++;
+      printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+      return true;
+    }
+    iter->anterior->siguiente_nodo = nodo_aux;
+    nodo_aux->siguiente_nodo = iter->actual;
+    iter->actual = nodo_aux;
+    iter->tam_lista++;
+    printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+    return true;
 }
 /*
 int main() {

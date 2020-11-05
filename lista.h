@@ -22,6 +22,7 @@ typedef struct nodo {
 typedef struct lista_iter {
   struct nodo *actual;
   struct nodo *anterior;
+  size_t *tam_lista;
 } lista_iter_t;
 
 /* ******************************************************************
@@ -99,7 +100,7 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
  void *lista_iter_borrar(lista_iter_t *iter);
 
 
-
+size_t lista_iter_largo(const lista_iter_t * iter);
 /* *****************************************************************
  *                      PRUEBAS UNITARIAS
  * *****************************************************************/

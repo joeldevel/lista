@@ -145,6 +145,7 @@ static void prueba_lista_de_pilas(void) {
     lista_destruir(l, NULL);
 
 }
+/*
 static void prueba_lista_iterador_interno(void) {
     printf("INICIO DE PRUEBAS ITERADOR INTERNO\n");
     // bool imprimir_un_item(void *elemento, void *extra) {
@@ -189,33 +190,100 @@ static void prueba_lista_iterador_interno(void) {
     lista_destruir(super, NULL);
 
 }
+*/
 static void prueba_lista_iterador_externo(void) {
-  printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
-
+/*
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
   lista_t * nums = lista_crear();
-  int n[] = {10,20,340,39};
-  lista_insertar_ultimo(nums, &n[0]);
-  lista_insertar_ultimo(nums, &n[1]);
-  lista_insertar_ultimo(nums, &n[2]);
-  lista_insertar_ultimo(nums, &n[3]);
 
+  int n[] = {10,20,340,39};
+  // lista_insertar_ultimo(nums, &n[0]);
+  // lista_insertar_ultimo(nums, &n[1]);
+  // lista_insertar_ultimo(nums, &n[2]);
+  // lista_insertar_ultimo(nums, &n[3]);
   lista_iter_t * iter = lista_iter_crear(nums);
+
+  lista_iter_insertar(iter, &n[0]);
+  lista_iter_insertar(iter, &n[1]);
+  lista_iter_insertar(iter, &n[2]);
+  lista_iter_insertar(iter, &n[3]);
   // printf("iter es %p\n", iter);
-  bool ok = n[0] == *(int *)lista_iter_ver_actual(iter);
+  bool ok = n[3] == *(int *)lista_iter_ver_actual(iter);
   print_test("El iter accede a primer elemento de lista ", ok);
   print_test("Lista iter NO al final, antes de ciclo ", !lista_iter_al_final(iter));
-  int i = 0;
+  int i = 3;
   while(!lista_iter_al_final(iter)) {
      ok = n[i] == *(int *)lista_iter_ver_actual(iter);
      print_test("El iter accede al elemento de la lista", ok);
      print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
-     i++;
+     i--;
   }
+  // insertar al final
+  int alfinal = 34;
+  lista_iter_insertar(iter, &alfinal);
+  ok = 34 == *(int *)lista_iter_ver_actual(iter);
+  lista_iter_avanzar(iter);
+  print_test("El iter accede al nuevo al final", ok);
+  printf("Cantidad de elementos en la lista %lu", lista_largo(nums));
+  // print_test("Cantidad de elementos en la lista ", 4==lista_largo(nums));
   print_test("Lista iter al final ", lista_iter_al_final(iter));
   lista_destruir(nums, NULL);
   lista_iter_destruir(iter);
+  */
 }
 
+static void prueba_lista_imprimir_iter_externo(void) {
+  printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
+  // printf("sizeof_size_t= %lu\n", sizeof(size_t));
+  // void imprimir_iter_externo(lista_t *lista) {
+  //     lista_iter_t *iter = lista_iter_crear(lista);
+  //     int num_items = 0;
+  //
+  //     while (!lista_iter_al_final(iter)) {
+  //         char *elemento = lista_iter_ver_actual(iter);
+  //         printf("%d. %s\n", ++num_items, elemento);
+  //
+  //         lista_iter_avanzar(iter);
+  //     }
+  //     printf("Tengo que comprar %d ítems\n", num_items);
+  //     lista_iter_destruir(iter);
+  // }
+  lista_t *super = lista_crear();
+
+  // lista_insertar_ultimo(super, "leche");
+  // printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  //
+  // lista_insertar_ultimo(super, "huevos");
+  // printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  //
+  // lista_insertar_ultimo(super, "pan");
+  //
+  // lista_insertar_ultimo(super, "mermelada");
+  lista_iter_t * iter = lista_iter_crear(super);
+  int items[] = {10,20,340,39};
+  lista_iter_insertar(iter, &items[0]);
+  printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  lista_iter_insertar(iter, &items[1]);
+  printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  lista_iter_insertar(iter, &items[2]);
+  printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  lista_iter_insertar(iter, &items[3]);
+  // printf("Cantidad de elemento en lista %lu\n", );
+  // imprimir_iter_externo(super);
+  // printf("ver list primero %d\n",*(int*)lista_ver_primero(super) );
+  if (lista_esta_vacia(super)) printf("La lista esta vacia\n");
+
+  while(!lista_iter_al_final(iter)) {
+     // ok = n[i] == *(int *)lista_iter_ver_actual(iter);
+     printf("%d\n",*(int*)lista_iter_ver_actual(iter));
+     // print_test("El iter accede al elemento de la lista", ok);
+     print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
+  }
+  // bool son_iguales = lista_iter_largo(iter)==lista_largo(super);
+  // printf("lista_largo==lista_iter_largo? %d \n",);
+  lista_destruir(super, NULL);
+  lista_iter_destruir(iter);
+}
 void pruebas_lista_estudiante() {
     prueba_lista_vacia();
     prueba_lista_ver_primero_vacia_es_invalido();
@@ -225,8 +293,9 @@ void pruebas_lista_estudiante() {
     prueba_lista_volumen();
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
-    prueba_lista_iterador_interno();
+    // prueba_lista_iterador_interno();
     prueba_lista_iterador_externo();
+    prueba_lista_imprimir_iter_externo();
 }
 
 
