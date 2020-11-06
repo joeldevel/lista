@@ -20,8 +20,8 @@ typedef struct nodo {
     struct nodo *siguiente_nodo;
 } nodo_t;
 typedef struct lista_iter {
-  struct nodo *actual;
-  struct nodo *anterior;
+  struct nodo **actual;
+  struct nodo **anterior;
   size_t *tam_lista;
 } lista_iter_t;
 

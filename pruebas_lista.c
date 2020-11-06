@@ -240,34 +240,38 @@ static void prueba_lista_imprimir_iter_externo(void) {
   int items[] = {10,20,340,39};
 
   lista_iter_insertar(iter, &items[0]);
-  printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
-  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+  // printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  // printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
 
-  lista_iter_insertar(iter, &items[1]);
+  if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsecion oK\n");
   printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
   printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
 
   lista_iter_insertar(iter, &items[2]);
-  printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
-  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+  // printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  // printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
 
   lista_iter_insertar(iter, &items[3]);
   printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
-  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+  // printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
 
   // printf("Cantidad de elemento en lista %lu\n", );
   // imprimir_iter_externo(super);
   // printf("ver list primero %d\n",*(int*)lista_ver_primero(super) );
-  if (lista_esta_vacia(super)) printf("La lista esta vacia\n");
-  print_test("listaprimero==NULL ",NULL==lista_ver_primero(super));
+  // if (lista_esta_vacia(super)) printf("La lista esta vacia\n");
+  // print_test("listaprimero==NULL ",39==*(int*)lista_ver_primero(super));
+  print_test("listaprimero==39 ",39==*(int*)lista_ver_primero(super));
 
 
-  while(!lista_iter_al_final(iter)) {
-    printf("Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+  // while(!lista_iter_al_final(iter)) {
+      // printf("Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
       // printf("Con lista verPrimero %d\n",*(int*)lista_ver_primero(super));
-      print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
+      // print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
+  // }
+  while(!lista_esta_vacia(super)) {
+    printf("\telemnot %d\n",*(int*)lista_ver_primero(super) );
+    lista_borrar_primero(super);
   }
-
   lista_destruir(super, NULL);
   lista_iter_destruir(iter);
   printf("Fin iterador EXTERNO\n");
