@@ -6,7 +6,7 @@
 typedef struct lista {
     struct nodo *primer_elemento;
     struct nodo *ultimo_elemento;
-    size_t *largo;
+    size_t largo;
 } lista_t;
 
 // funcion auxiliar
@@ -27,6 +27,8 @@ lista_t *lista_crear(void) {
     lista->primer_elemento = NULL;
     lista->ultimo_elemento = NULL;
     lista->largo = 0;
+    printf("lista->largo=%lu\n",lista->largo);
+
     return lista;
 }
 bool lista_esta_vacia(const lista_t *lista) {
@@ -83,7 +85,8 @@ void *lista_ver_ultimo(const lista_t *lista) {
     return lista->ultimo_elemento->dato;
 }
 size_t lista_largo(const lista_t *lista) {
-    return (size_t)lista->largo/(sizeof(size_t));
+    // return (size_t)lista->largo/(sizeof(size_t));
+    return lista->largo;
 }
 
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
@@ -117,14 +120,15 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *a
  *                    PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
 lista_iter_t *lista_iter_crear(lista_t *lista) {
-    // printf("Entrando a lista_iter_crear\n");
+    printf("Entrando a lista_iter_crear\n");
     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
     if (!iter) return NULL;
     iter->actual = lista->primer_elemento;
     iter->anterior = NULL;
     // printf("Iter apunta a %d\n", *(int *)iter->actual->dato);
-    iter->tam_lista = lista->largo;
-    printf("###tam y largo son iguales %d\n",iter->tam_lista==lista->largo);
+    iter->tam_lista = &lista->largo;
+    printf("tam->lista=%p, lista->largo=%p", iter->tam_lista, &lista->largo);
+    // printf("###tam y largo son iguales %d\n",iter->tam_lista==lista->largo);
     return iter;
 }
 size_t lista_iter_largo(const lista_iter_t * iter) {
@@ -150,22 +154,28 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
     // lista vacia
     if (iter->anterior == NULL && iter->actual == NULL) {
           iter->actual = nodo_aux;
-          iter->tam_lista++;
-          printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+          *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+          printf("tam->lista=%p\n", iter->tam_lista);
+
+          // printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
           return true;
     }
     // un solo elemento en lista
     if (iter->actual != NULL && iter->anterior==NULL) {
       nodo_aux->siguiente_nodo = iter->actual;
       iter->actual = nodo_aux;
-      iter->tam_lista++;
-      printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+      // iter->tam_lista++;
+      *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+      printf("tam->lista=%p\n", iter->tam_lista);
+
+      // printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
       return true;
     }
     iter->anterior->siguiente_nodo = nodo_aux;
     nodo_aux->siguiente_nodo = iter->actual;
     iter->actual = nodo_aux;
-    iter->tam_lista++;
+    *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+    // iter->tam_lista++;
     printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
     return true;
 }
