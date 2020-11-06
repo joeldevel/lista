@@ -49,14 +49,19 @@ bool lista_insertar_primero(lista_t *lista, void *dato) {
     return true;
 }
 void *lista_borrar_primero(lista_t *lista) {
+  printf("Entrando a lista borran primero\n" );
+
     if (lista_esta_vacia(lista)) return NULL;
-    nodo_t *nodo_aux = crear_nodo(0);
+    nodo_t *nodo_aux = crear_nodo(NULL);
     nodo_aux->siguiente_nodo = lista->primer_elemento;
     void *p = nodo_aux->siguiente_nodo->dato;
     // printf("(valor de p) %d\n",*(int*)p );
     lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
     lista->largo--;
-    if (lista_esta_vacia(lista)) lista->ultimo_elemento = NULL;
+    if (lista_esta_vacia(lista)) {
+        lista->ultimo_elemento = NULL;
+    }
+    printf("Borrando %p\n", nodo_aux->siguiente_nodo);
     free(nodo_aux->siguiente_nodo);
     free(nodo_aux);
     return p;
@@ -77,6 +82,7 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
   return true;
 }
 void *lista_ver_primero(const lista_t *lista) {
+    if (lista->primer_elemento== NULL) return NULL;
     if (lista_esta_vacia(lista)) return NULL;
     return lista->primer_elemento->dato;
 }
@@ -90,16 +96,20 @@ size_t lista_largo(const lista_t *lista) {
 }
 
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
+    printf("Entrando a lista destruir\n" );
     if (destruir_dato == NULL) {
+      printf("Lista_destruir borrando...\n");
        while (lista->primer_elemento) {
            lista_borrar_primero(lista);
        }
     }
     else {
         while (lista->primer_elemento) {
+            printf("Lista_destruir borrando...\n");
+
             destruir_dato(lista->primer_elemento->dato);
-	    lista_borrar_primero(lista);
-	}
+	          lista_borrar_primero(lista);
+	      }
     }
 	free(lista->primer_elemento);
 	free(lista->ultimo_elemento);
@@ -138,45 +148,72 @@ void *lista_iter_ver_actual(const lista_iter_t *iter) {
     return iter->actual->dato;
 }
 void lista_iter_destruir(lista_iter_t *iter) {
+    free(iter->actual);
+    free(iter->anterior);
+    // free(iter->tam_lista);
     free(iter);
 }
 bool lista_iter_avanzar(lista_iter_t *iter) {
-    if (iter->actual == NULL) return false;
-    iter->anterior = iter->actual;
+    if (iter->actual == NULL) {
+      printf("#@@@@@@@@@@@@@Iter actual == NULL\n" );
+      return false;
+    }
+    // primer elemetno;
+    if (iter->anterior==NULL) {
+        iter->anterior=iter->actual;
+        iter->actual = iter->actual->siguiente_nodo;
+        return true;
+    }
+    iter->anterior = iter->anterior->siguiente_nodo;
     iter->actual = iter->actual->siguiente_nodo;
     return true;
 }
 bool lista_iter_al_final(const lista_iter_t *iter) {
+  if (iter->actual == NULL)  {
+    printf("$$$$$$$$$$$$$$$lista iter al final\n");
+  }
   return iter->actual == NULL;
 }
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
     nodo_t * nodo_aux = crear_nodo(dato);
     // lista vacia
     if (iter->anterior == NULL && iter->actual == NULL) {
+          printf("\ninsertando en lista vacia\n" );
           iter->actual = nodo_aux;
           *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-          printf("tam->lista=%p\n", iter->tam_lista);
+          printf("puntero tam->lista=%p\n", iter->tam_lista);
+
 
           // printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
           return true;
     }
     // un solo elemento en lista
     if (iter->actual != NULL && iter->anterior==NULL) {
+      printf("insertando en lista 1 elemento en lista\n" );
       nodo_aux->siguiente_nodo = iter->actual;
       iter->actual = nodo_aux;
-      // iter->tam_lista++;
+      // iter->actual=iter->actual->siguiente_nodo;
       *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-      printf("tam->lista=%p\n", iter->tam_lista);
-
-      // printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+      printf("puntero tam->lista=%p\n", iter->tam_lista);
       return true;
     }
+    // iter al final
+    if (iter->actual == NULL && iter->anterior != NULL) {
+      printf("insertando en lista al final\n" );
+
+      iter->anterior->siguiente_nodo = nodo_aux;
+      iter->actual= nodo_aux;
+      // iter->actual=iter->actual->siguiente_nodo;
+      *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+      printf("puntero tam->lista=%p\n", iter->tam_lista);
+      return true;
+    }
+    printf("caso general\n" );
     iter->anterior->siguiente_nodo = nodo_aux;
     nodo_aux->siguiente_nodo = iter->actual;
-    iter->actual = nodo_aux;
+    iter->actual = iter->anterior->siguiente_nodo;
     *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-    // iter->tam_lista++;
-    printf("iter->tam_lista %lu\n", lista_iter_largo(iter));
+    printf("puntero tam->lista=%p\n", iter->tam_lista);
     return true;
 }
 /*

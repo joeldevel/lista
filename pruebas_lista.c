@@ -234,55 +234,43 @@ static void prueba_lista_iterador_externo(void) {
 
 static void prueba_lista_imprimir_iter_externo(void) {
   printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
-  // printf("sizeof_size_t= %lu\n", sizeof(size_t));
-  // void imprimir_iter_externo(lista_t *lista) {
-  //     lista_iter_t *iter = lista_iter_crear(lista);
-  //     int num_items = 0;
-  //
-  //     while (!lista_iter_al_final(iter)) {
-  //         char *elemento = lista_iter_ver_actual(iter);
-  //         printf("%d. %s\n", ++num_items, elemento);
-  //
-  //         lista_iter_avanzar(iter);
-  //     }
-  //     printf("Tengo que comprar %d ítems\n", num_items);
-  //     lista_iter_destruir(iter);
-  // }
-  lista_t *super = lista_crear();
 
-  // lista_insertar_ultimo(super, "leche");
-  // printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
-  //
-  // lista_insertar_ultimo(super, "huevos");
-  // printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
-  //
-  // lista_insertar_ultimo(super, "pan");
-  //
-  // lista_insertar_ultimo(super, "mermelada");
+  lista_t *super = lista_crear();
   lista_iter_t * iter = lista_iter_crear(super);
   int items[] = {10,20,340,39};
+
   lista_iter_insertar(iter, &items[0]);
   printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+
   lista_iter_insertar(iter, &items[1]);
+  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
   printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+
   lista_iter_insertar(iter, &items[2]);
   printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+
   lista_iter_insertar(iter, &items[3]);
+  printf("Cantidad de elemento en lista %lu\n", lista_largo(super));
+  printf("~~~~~~~~~~~Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+
   // printf("Cantidad de elemento en lista %lu\n", );
   // imprimir_iter_externo(super);
   // printf("ver list primero %d\n",*(int*)lista_ver_primero(super) );
   if (lista_esta_vacia(super)) printf("La lista esta vacia\n");
+  print_test("listaprimero==NULL ",NULL==lista_ver_primero(super));
+
 
   while(!lista_iter_al_final(iter)) {
-     // ok = n[i] == *(int *)lista_iter_ver_actual(iter);
-     printf("%d\n",*(int*)lista_iter_ver_actual(iter));
-     // print_test("El iter accede al elemento de la lista", ok);
-     print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
+    printf("Con iter ver actual %d\n",*(int*)lista_iter_ver_actual(iter));
+      // printf("Con lista verPrimero %d\n",*(int*)lista_ver_primero(super));
+      print_test("lista_iter_avanzar funciona ", lista_iter_avanzar(iter));
   }
-  // bool son_iguales = lista_iter_largo(iter)==lista_largo(super);
-  // printf("lista_largo==lista_iter_largo? %d \n",);
+
   lista_destruir(super, NULL);
   lista_iter_destruir(iter);
+  printf("Fin iterador EXTERNO\n");
 }
 void pruebas_lista_estudiante() {
     prueba_lista_vacia();
