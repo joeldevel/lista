@@ -191,39 +191,43 @@ bool lista_iter_al_final(const lista_iter_t *iter) {
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
     nodo_t *nodo_a_insertar = crear_nodo(dato);
+    // lo que saco afuera de todas
+    // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+    // return true;
     if (!nodo_a_insertar) return false;
-    
     // lista vacia
-    if (lista_iter_largo(iter) == 0) {
-       *iter->ultimo_lista = nodo_a_insertar;
-        *iter->primero_lista = nodo_a_insertar; //R
-        iter->actual = iter->primero_lista; //R
-        iter->anterior = NULL;
-        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-        // return true;
+    if ( iter->anterior == NULL || lista_iter_largo(iter)==0) {
+      if (iter->anterior == NULL ) nodo_a_insertar->siguiente = *iter->primero_lista;
+      *iter->primero_lista = nodo_a_insertar; // R
+      iter->actual = iter->primero_lista; // R
+      if ( lista_iter_largo(iter)==0)  *iter->ultimo_lista = nodo_a_insertar;
     }
-    // insertar al principio
-    else if (iter->anterior == NULL) {
-        nodo_a_insertar->siguiente = *iter->primero_lista;
-        *iter->primero_lista = nodo_a_insertar; // R
-        iter->actual = iter->primero_lista; // R
-        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-        // return true;
-    }
-    // insertar en el medio
-    else if (iter->actual != NULL && iter->anterior != NULL) {
+    // if (lista_iter_largo(iter) == 0) {
+    //     *iter->ultimo_lista = nodo_a_insertar;
+    //     *iter->primero_lista = nodo_a_insertar; //R
+    //     iter->actual = iter->primero_lista; //R
+    //     // iter->anterior = NULL;
+    // }
+    // else {
+      // insertar al principio
+      // if (iter->anterior == NULL) {
+      //   nodo_a_insertar->siguiente = *iter->primero_lista;
+      //   *iter->primero_lista = nodo_a_insertar; // R
+      //   iter->actual = iter->primero_lista; // R
+      // }
+      // insertar en el medio
+      else if (iter->actual != NULL && iter->anterior != NULL) {
         nodo_a_insertar->siguiente = *iter->actual;
         ((*iter->anterior)->siguiente) = nodo_a_insertar;
         *iter->actual = nodo_a_insertar;
-        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-        // return true;
-    }
-    // insertar al final
-    else  {
-       ((*iter->ultimo_lista)->siguiente) = nodo_a_insertar;
-       *iter->ultimo_lista = nodo_a_insertar;
-       iter->actual = iter->ultimo_lista;
-    }
+      }
+      // insertar al final
+      else if( iter->actual == NULL) {
+        ((*iter->ultimo_lista)->siguiente) = nodo_a_insertar;
+        *iter->ultimo_lista = nodo_a_insertar;
+        iter->actual = iter->ultimo_lista;
+      }
+    // }
 
     *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
     return true;
