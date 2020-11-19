@@ -49,13 +49,23 @@ bool lista_esta_vacia(const lista_t *lista) {
 bool lista_insertar_primero(lista_t *lista, void *dato) {
     nodo_t *nodo = crear_nodo(dato);
     if (!nodo) return false;
+    // if (cola_esta_vacia(cola)) {
+    //     cola->primero = nodo;
+    // } else {
+    //     cola->ultimo->siguiente_nodo = nodo;
+    // }
+    // cola->ultimo = nodo;
+    // return true;
     if (lista_esta_vacia(lista)) {
-        lista->primero = nodo;
+        // lista->primero = nodo;
         lista->ultimo = nodo;
-        lista->largo++;
-        return true;
+        // lista->largo++;
+        // return true;
     }
-    nodo->siguiente = lista->primero;
+    else {
+      nodo->siguiente = lista->primero;
+
+    }
     lista->primero = nodo;
     lista->largo++;
     return true;
@@ -184,8 +194,6 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
     if (lista_iter_largo(iter) == 0) return true;
-    // if (iter->actual == NULL) return true;
-    // return *iter->actual == NULL;
     return iter->actual == NULL ? true : *iter->actual == NULL;
 }
 
@@ -227,34 +235,19 @@ void *lista_iter_borrar(lista_iter_t *iter) {
     }
     // borrar al principio
     else if (iter->anterior == NULL || (*iter->anterior) == NULL) {
-        // nodo_t *nodo_a_borrar = (*(iter->actual));
-        // void *dato_a_devolver = (*(iter->actual))->dato;
 
         *iter->primero_lista = (*iter->primero_lista)->siguiente;
         iter->actual = iter->primero_lista;
-        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)-1;
-        // free(nodo_a_borrar);
-        // return dato_a_devolver;
     }
     // borrar al final
     else if (((*iter->actual)->siguiente) == NULL && !(iter->anterior == NULL)) {
-        // nodo_t *nodo_a_borrar = (*(iter->actual));
-        // void *dato_a_devolver = (*(iter->actual))->dato;
         *iter->ultimo_lista = *iter->anterior;
         (*iter->ultimo_lista)->siguiente = NULL;
-        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)-1;
-        // free(nodo_a_borrar);
-        // return dato_a_devolver;
     }
     else {
       // borrar en el medio
-      // nodo_t *nodo_a_borrar = (*(iter->actual));
-      // void *dato_a_devolver = (*(iter->actual))->dato;
       (*iter->anterior)->siguiente= (*iter->actual)->siguiente;
       iter->actual = &(*iter->anterior)->siguiente;
-      // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)-1;
-      // free( nodo_a_borrar);
-      // return dato_a_devolver;
     }
     *(iter->tam_lista) = (*(size_t*)iter->tam_lista)-1;
     free(nodo_a_borrar);
