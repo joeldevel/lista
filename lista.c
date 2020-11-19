@@ -184,8 +184,9 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
     if (lista_iter_largo(iter) == 0) return true;
-    if (iter->actual == NULL) return true;
-    return *iter->actual == NULL;
+    // if (iter->actual == NULL) return true;
+    // return *iter->actual == NULL;
+    return iter->actual == NULL ? true : *iter->actual == NULL;
 }
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
