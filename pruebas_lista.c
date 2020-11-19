@@ -4,8 +4,8 @@
 #include<stdio.h>
 
 // para el iterador interno
-const int CANT_ITEMS = 3;
-const int SUMA_ITEMS = 210;
+#define CANT_ITEMS  3
+#define SUMA_ITEMS  210
 
 /* Pruebas para una lista vacía. */
 static void prueba_lista_vacia(void) {

@@ -63,15 +63,17 @@ bool lista_insertar_primero(lista_t *lista, void *dato) {
 
 void *lista_borrar_primero(lista_t *lista) {
     if (lista_esta_vacia(lista)) return NULL;
-    nodo_t *nodo_aux = crear_nodo(NULL);
-    nodo_aux->siguiente = lista->primero;
-    void *p = nodo_aux->siguiente->dato;
+    // nodo_t *nodo_aux = crear_nodo(NULL);
+    nodo_t *nodo_aux = lista->primero;
+    // nodo_aux->siguiente = lista->primero;
+    // void *p = nodo_aux->siguiente->dato;
+    void *p = nodo_aux->dato;
     lista->primero = lista->primero->siguiente;
     lista->largo--;
     if (lista_esta_vacia(lista)) {
         lista->ultimo = NULL;
     }
-    free(nodo_aux->siguiente);
+    // free(nodo_aux->siguiente);
     free(nodo_aux);
     return p;
 }
