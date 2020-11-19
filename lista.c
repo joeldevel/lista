@@ -41,9 +41,11 @@ lista_t *lista_crear(void) {
     lista->largo = 0;
     return lista;
 }
+
 bool lista_esta_vacia(const lista_t *lista) {
     return lista->largo == 0;
 }
+
 bool lista_insertar_primero(lista_t *lista, void *dato) {
     nodo_t *nodo = crear_nodo(dato);
     if (!nodo) return false;
@@ -58,6 +60,7 @@ bool lista_insertar_primero(lista_t *lista, void *dato) {
     lista->largo++;
     return true;
 }
+
 void *lista_borrar_primero(lista_t *lista) {
     if (lista_esta_vacia(lista)) return NULL;
     nodo_t *nodo_aux = crear_nodo(NULL);
@@ -87,18 +90,22 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
     lista->largo++;
     return true;
 }
+
 void *lista_ver_primero(const lista_t *lista) {
     if (lista->primer_elemento== NULL) return NULL;
     if (lista_esta_vacia(lista)) return NULL;
     return lista->primer_elemento->dato;
 }
+
 void *lista_ver_ultimo(const lista_t *lista) {
     if (lista_esta_vacia(lista)) return NULL;
     return lista->ultimo_elemento->dato;
 }
+
 size_t lista_largo(const lista_t *lista) {
     return lista->largo;
 }
+
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
     if (destruir_dato == NULL) {
        while (lista->primer_elemento != NULL) {
@@ -144,17 +151,21 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     iter->actual = &lista->primer_elemento;
     return iter;
 }
+
 size_t lista_iter_largo(const lista_iter_t * iter) {
     return *(size_t*)iter->tam_lista;
 }
+
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
     if (lista_iter_largo(iter) == 0) return NULL;
     if (lista_iter_al_final(iter)) return NULL;
     return (*iter->actual)->dato;
 }
+
 void lista_iter_destruir(lista_iter_t *iter) {
     free(iter);
 }
+
 bool lista_iter_avanzar(lista_iter_t *iter) {
     if (lista_iter_largo(iter) == 0) return false;
     if (iter->actual == NULL || *iter->actual==NULL) {
@@ -168,11 +179,13 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
     iter->actual = &(*(iter->actual))->siguiente_nodo;
     return true;
 }
+
 bool lista_iter_al_final(const lista_iter_t *iter) {
     if (lista_iter_largo(iter) == 0) return true;
     if (iter->actual == NULL) return true;
     return *iter->actual == NULL;
 }
+
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
     nodo_t *nodo_a_insertar = crear_nodo(dato);
     if (!nodo_a_insertar) return false;
@@ -208,6 +221,7 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
     *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
     return true;
 }
+
 void *lista_iter_borrar(lista_iter_t *iter) {
     if ((*(iter->actual)) == NULL) return false;
     if (lista_iter_largo(iter) == 0) {
