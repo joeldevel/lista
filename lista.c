@@ -106,7 +106,7 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
 }
 
 void *lista_ver_primero(const lista_t *lista) {
-    if (lista->primero== NULL) return NULL;
+    // if (lista->primero== NULL) return NULL;
     // if (lista_esta_vacia(lista)) return NULL;
     // return lista->primero->dato;
     return lista_esta_vacia(lista) ? NULL : lista->primero->dato;
@@ -122,17 +122,25 @@ size_t lista_largo(const lista_t *lista) {
 }
 
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
-    if (destruir_dato == NULL) {
-       while (lista->primero != NULL) {
-           lista_borrar_primero(lista);
-       }
-    }
-    else {
-        while (lista->primero) {
-            destruir_dato(lista->primero->dato);
-	          lista_borrar_primero(lista);
-	      }
-    }
+  while (!lista_esta_vacia(lista)) {
+      if (!(destruir_dato == NULL)) {
+          destruir_dato(lista->primero->dato);
+      }
+      lista_borrar_primero(lista);
+
+  }
+    //
+    // if (destruir_dato == NULL) {
+    //    while (lista->primero != NULL) {
+    //        lista_borrar_primero(lista);
+    //    }
+    // }
+    // else {
+    //     while (lista->primero) {
+    //         destruir_dato(lista->primero->dato);
+	  //         lista_borrar_primero(lista);
+	  //     }
+    // }
   	free(lista->primero);
   	free(lista->ultimo);
   	free(lista);
