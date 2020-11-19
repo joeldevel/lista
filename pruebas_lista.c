@@ -1,8 +1,11 @@
 #include "lista.h"
 #include "testing.h"
 #include "pila.h"
-//#include "cola.h"
 #include<stdio.h>
+
+// para el iterador interno
+const int CANT_ITEMS = 3;
+const int SUMA_ITEMS = 210;
 
 /* Pruebas para una lista vacía. */
 static void prueba_lista_vacia(void) {
@@ -55,19 +58,19 @@ static void prueba_lista_volumen(void) {
     int M = 1000;
     int e[M];
     bool ok = true;
-    for (int i=0; i<M; i++) {
+    for (int i = 0; i < M; i++) {
         e[i] = i;
         ok &= lista_insertar_primero(lista, &e[i]);
     }
     print_test("Se insertaron los elementos: ", ok);
 
-    for (int i=0; i<M; i++) {
+    for (int i = 0; i < M; i++) {
         ok &= ((M-1-i)== *(int*)lista_borrar_primero(lista));
     }
     print_test("Los elementos estan en orden correcto: ", ok);
     lista_destruir(lista,NULL);
 }
-static void prueba_lista_se_puede_insertar_null(void) { 
+static void prueba_lista_se_puede_insertar_null(void) {
     printf("INICIO DE PRUEBAS SE PUEDE INSERTAR NULL\n");
 
     lista_t *lista = lista_crear();
@@ -76,9 +79,9 @@ static void prueba_lista_se_puede_insertar_null(void) {
     print_test("La lista NO esta vacia despues de insertar NULL ",!lista_esta_vacia(lista));
     print_test("El elemeno es NULL ", NULL==lista_ver_ultimo(lista));
     lista_destruir(lista, NULL);
-    
+
 }
-// wrapper 
+// wrapper
 void pila_destruir_wrapper(void *elem) {
     pila_destruir(elem);
 }
@@ -119,184 +122,248 @@ static void prueba_lista_de_pilas(void) {
     ok &= lista_insertar_ultimo(l, pi3);
     print_test("lista_insertar_ultimo pi3 ", ok);
     // sacarlas y ver si coinciden los datos
-    pila_t *paux = lista_borrar_primero(l); 
+    pila_t *paux = lista_borrar_primero(l);
     for (int i=0; i < tam_chars; i++) {
-    	ok &= (chars[tam_chars-i-1]==*(char*)pila_ver_tope(paux));
-	pila_desapilar(paux);
+    	 ok &= (chars[tam_chars-i-1]==*(char*)pila_ver_tope(paux));
+	     pila_desapilar(paux);
     }
     print_test("lista_borrar_primero devuelve pi2", ok);
-    //pila_destruir(paux);
-    paux = lista_borrar_primero(l); 
+    pila_destruir(paux);
+    paux = lista_borrar_primero(l);
     for (int i=0; i < tam_nums; i++) {
-    	ok &= (nums[tam_nums-i-1]==*(int*)pila_ver_tope(paux));
-	pila_desapilar(paux);
+        ok &= (nums[tam_nums-i-1]==*(int*)pila_ver_tope(paux));
+	      pila_desapilar(paux);
     }
     print_test("lista_borrar_primero devuelve pi1", ok);
     pila_destruir(paux);
-    paux = lista_borrar_primero(l); 
+    paux = lista_borrar_primero(l);
     for (int i=0; i < tam_bools; i++) {
-    	ok &= (bools[tam_bools-i-1]==*(bool*)pila_ver_tope(paux));
-	pila_desapilar(paux);
+    	 ok &= (bools[tam_bools-i-1]==*(bool*)pila_ver_tope(paux));
+	      pila_desapilar(paux);
     }
     print_test("lista_borrar_primero devuelve pi3", ok);
     pila_destruir(paux);
-
     lista_destruir(l, NULL);
-    
 }
-/* Pruebas para tope lista vacía es inválido. */
-// static void prueba_lista_ver_tope_creada_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS VER TOPE EN LISTA VACÍA ES INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     print_test("Prueba lista ver tope en lista recién creada es inválido: ", lista_ver_tope(lista)==NULL);
-//     lista_destruir(lista);
-// }
 
-/* Pruebas para alistar un elemento. */
-// static void prueba_alistar_un_elemento(void) {
-//
-//     printf("INICIO DE PRUEBAS ALISTAR UN ELEMENTO\n");
-//
-//     lista_t *lista = lista_crear();
-//
-//     char elemento = 'A';
-//
-//     bool ok = lista_alistar(lista, &elemento);
-//     print_test("Se puede alistar un elemento", ok);
-//
-//     int tope = *(char*)lista_ver_tope(lista);
-//     printf("lo que vuelve de lista_ver_tope= %c\n", tope );
-//
-//     lista_destruir(lista);
-// }
+static void prueba_lista_imprimir_iter_externo(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
 
-/* Pruebas para alistar pocos elementos. */
-// static void prueba_alistar_pocos_elementos(void) {
-//
-//     printf("INICIO DE PRUEBAS ALISTAR POCOS ELEMENTOS\n");
-//
-//     lista_t *lista = lista_crear();
-//     char elementos[] = {'A','b','c', 'F','X'};
-//     int tam = 5;
-//     bool ok = true;
-//     for(int i=0; i < tam; i++) {
-//         lista_alistar(lista, &elementos[i]);
-//         ok &= (elementos[i]==*(char*)lista_ver_tope(lista));
-//     }
-//
-//     print_test("se pudieron alistar todos los elementos", ok);
-//
-//     lista_destruir(lista);
-// }
+    lista_t *super = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(super);
+    int items[] = {10,20,340,39};
 
-/*Se pueden desalistar los elementos y se cumple FIFO*/
-// static void prueba_lista_desalistar(void) {
-//
-//     printf("INICIO DE PRUEBAS DESALISTAR\n");
-//
-//     lista_t *lista = lista_crear();
-//     int valores[] = {11,22,33,44,55,66,77,88,99};
-//     int tam = 9;
-//     for (int i = 0; i < tam; i++) {
-//         lista_alistar(lista, &valores[i]);
-//     }
-//
-//     bool ok = true;
-//     for (int i = 0; i < tam; i++) {
-//       ok &= (valores[tam-i-1]==*(int*)lista_desalistar(lista));
-//     }
-//     print_test("se pudieron desalistar todos los elementos", ok);
-//
-//     lista_destruir(lista);
-// }
+    lista_iter_insertar(iter, &items[0]);
+    if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsecion oK\n");
+    lista_iter_insertar(iter, &items[2]);
+    lista_iter_insertar(iter, &items[3]);
 
-/* Pruebas de la lista al trabajar con un volumen grande de elementos */
-// static void prueba_lista_volumen(void) {
-//
-//     printf("INICIO DE PRUEBAS VOLUMEN\n");
-//
-//     lista_t *lista = lista_crear();
-//
-//     int tam = 1000;
-//     int el[tam];
-//     for (int i = 0; i< tam; i++) {
-//       el[i] = i;
-//     }
-//     bool ok = true;
-//     for (int i = 0; i < tam; i++) {
-//         // Si algun elemento no se pudo guardar correctamente, ok sera false
-//         ok &= lista_alistar(lista, &el[i]);
-//     }
-//     print_test("se pudieron alistar todos los elementos", ok);
-//
-//     // desalistarlos
-//     ok = true;
-//     for (int i = 0; i < tam; i++) {
-//         ok &= (tam-i-1==*(int*)lista_desalistar(lista));
-//     }
-//     print_test("se pudieron desalistar todos los elementos", ok);
-//
-//     lista_destruir(lista);
-// }
-// static void prueba_lista_desalistar_vacia_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS DESALISTAR LISTA VACÍA ES INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     print_test("Prueba lista vacía: ", lista_esta_vacia(lista));
-//     print_test("Prueba desalistar vacía es inválido", lista_desalistar(lista)==NULL);
-//     lista_destruir(lista);
-// }
-//
-// static void prueba_lista_desalistar_despues_de_alistar_y_desalistar_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS DESALISTAR DESPUES DE DESALISTAR INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     int valores[] = {11,22,33,44,55,66,77,88,99};
-//     int cant_valores = 9;
-//     for(int i = 0; i< cant_valores; i++) {
-//         lista_alistar(lista, &valores[i]);
-//     }
-//     for( int i = 0; i< cant_valores;i++) {
-//         lista_desalistar(lista);
-//     }
-//     print_test("Prueba desalistar despues de alistar y vaciar es inválido", lista_desalistar(lista)==NULL);
-//
-//     lista_destruir(lista);
-// }
-//
-//
-// static void prueba_lista_ver_tope_despues_de_alistar_y_desalistar_es_invalido(void) {
-//
-//     printf("INICIO DE PRUEBAS VER TOPE DESPUES DE DESALISTAR INVÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     int valores[] = {11,22,33,44,55,66,77,88,99};
-//     int cant_valores = 9;
-//     for(int i = 0; i< cant_valores; i++) {
-//       lista_alistar(lista, &valores[i]);
-//     }
-//     for( int i = 0; i< cant_valores;i++) {
-//         lista_desalistar(lista);
-//     }
-//     print_test("Prueba ver tope despues de alistar y vaciar es invalido", lista_desalistar(lista)==NULL);
-//
-//     lista_destruir(lista);
-// }
+    lista_destruir(super, NULL);
+    lista_iter_destruir(iter);
+}
 
-/* Se puede alistar NULL */
-// static void prueba_lista_alistar_null() {
-//
-//     printf("INICIO DE PRUEBAS ALISTAR NULL ES VÁLIDO\n");
-//
-//     lista_t *lista = lista_crear();
-//     print_test("Prueba se puede alistar NULL", lista_alistar(lista, NULL));
-//     lista_destruir(lista);
-// }
+// Al insertar un elemento en la posición en la que se crea el iterador, efectivamente se inserta al principio.
+static void prueba_iter_externo_insertar_al_ser_creado(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR AL SER CREADO\n");
 
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int items[] = {10,20,340,39};
+
+    lista_iter_insertar(iter, &items[0]);
+    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    print_test("Insertar al ser creado inserta al principio", ok);
+
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+// Insertar un elemento cuando el iterador está al final efectivamente es equivalente a insertar al final.
+static void prueba_iter_externo_insertar_al_final(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR AL FINAL\n");
+
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int items[] = {10,20,340,39};
+
+    lista_iter_insertar(iter, &items[0]);
+    lista_iter_insertar(iter, &items[1]);
+    lista_iter_insertar(iter, &items[2]);
+    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    print_test("Insertar al ser creado inserta al principio", ok);
+    lista_iter_avanzar(iter);
+    lista_iter_avanzar(iter);
+    lista_iter_avanzar(iter);
+    lista_iter_insertar(iter, &items[3]);
+    ok = lista_iter_ver_actual(iter)==lista_ver_ultimo(lista);
+
+    print_test("Insertar al final,", ok);
+    print_test("Actual NO esta al final ", !lista_iter_al_final(iter));
+    lista_iter_avanzar(iter);
+    print_test("Actual es al final ", lista_iter_al_final(iter));
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+// Insertar un elemento en el medio se hace en la posición correcta.
+static void prueba_iter_externo_insertar_medio(void) {
+  printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR EN MEDIO\n");
+
+  lista_t *lista = lista_crear();
+  lista_iter_t * iter = lista_iter_crear(lista);
+  int items[] = {10,20,340,39};
+
+  lista_iter_insertar(iter, &items[0]);
+  lista_iter_insertar(iter, &items[1]);
+  lista_iter_insertar(iter, &items[2]);
+
+  // voy a la segunda posicion
+  lista_iter_avanzar(iter);
+  lista_iter_insertar(iter, &items[3]);
+  bool ok = items[2]==*(int*)lista_borrar_primero(lista);
+  print_test("El primero sigue siendo el primero ",ok);
+   ok = lista_ver_primero(lista)== &items[3];
+  print_test("se inserto en la posicion correcta ",ok);
+
+  lista_destruir(lista, NULL);
+  lista_iter_destruir(iter);
+}
+// Al remover el elemento cuando se crea el iterador, cambia el primer elemento de la lista.
+static void prueba_iter_externo_borrar_al_crear(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR AL CREAR\n");
+
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int items[] = {10,20,340,39};
+
+    lista_iter_insertar(iter, &items[0]);
+    lista_iter_insertar(iter, &items[1]);
+    lista_iter_insertar(iter, &items[2]);
+    lista_iter_insertar(iter, &items[3]);
+    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    print_test("Insertar al ser creado inserta al principio", ok);
+    lista_iter_borrar(iter);
+    ok = *(int*)lista_ver_primero(lista)==items[2];
+    print_test("Borrar al principio,", ok);
+
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+// Remover el último elemento con el iterador cambia el último de la lista.
+static void prueba_iter_externo_borrar_al_final(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR AL FINAL\n");
+
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int items[] = {10,20,340,39};
+
+    lista_iter_insertar(iter, &items[0]);
+    lista_iter_insertar(iter, &items[1]);
+    lista_iter_insertar(iter, &items[2]);
+    lista_iter_insertar(iter, &items[3]);
+    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    print_test("Insertar al ser creado inserta al principio", ok);
+    lista_iter_avanzar(iter);
+    lista_iter_avanzar(iter);
+    lista_iter_avanzar(iter);
+    ok = lista_iter_ver_actual(iter)==lista_ver_ultimo(lista);
+    print_test("Insertar al final,", ok);
+
+    int * borrado = (int*)lista_iter_borrar(iter);
+    ok = *borrado == items[0];
+    print_test("devuelve el del final,", ok);
+    ok = *(int*)lista_ver_ultimo(lista)==items[1];
+    print_test("Borrar al final,", ok);
+
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+// Verificar que al remover un elemento del medio, este no está.
+static void prueba_iter_externo_borrar_medio(void) {
+  printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR EN MEDIO\n");
+
+  lista_t *lista = lista_crear();
+  lista_iter_t * iter = lista_iter_crear(lista);
+  int items[] = {10,20,340,39};
+
+  lista_iter_insertar(iter, &items[0]);//pos 3
+  lista_iter_insertar(iter, &items[1]);//pos 2
+  lista_iter_insertar(iter, &items[2]);//pos 1
+  lista_iter_insertar(iter, &items[3]);//pos 0
+
+  // voy a la segunda posicion, pos 1
+  lista_iter_avanzar(iter);
+  lista_iter_borrar(iter);
+
+  bool ok = *(int*)lista_iter_ver_actual(iter) == items[1];
+  lista_borrar_primero(lista);
+  ok &= *(int*)lista_ver_primero(lista) == items[1];
+  print_test("actual apunta al elemento correcto ",ok);
+
+  lista_destruir(lista, NULL);
+  lista_iter_destruir(iter);
+}
+static void prueba_iter_externo_borrar(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR\n");
+
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int items[] = {10,20,340};
+    lista_iter_insertar(iter, &items[0]);
+    lista_iter_insertar(iter, &items[1]);
+    lista_iter_insertar(iter, &items[2]);
+    lista_iter_avanzar(iter);
+    lista_iter_borrar(iter);
+    lista_iter_borrar(iter);
+    print_test("lista al final " ,lista_iter_al_final(iter));
+    print_test("la lista no esta vacia ", !lista_esta_vacia(lista));
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+//  funciones para probar el iterador interno
+// funcion con corte
+bool imprimir_hasta_tres_items(void *elemento, void *extra) {
+    int *contador = extra;
+    printf("%d. %d\n", ++(*contador), *(int *) elemento);
+    if ( *contador == CANT_ITEMS) return false;
+    return true;  // seguir iterando
+}
+// funcion sin corte
+bool sumar_los_items(void *elemento, void *extra) {
+    int *sumatoria = extra;
+    *sumatoria += *(int *)elemento;
+    return true;  // seguir iterando
+}
+bool imprimir_iter_interno(lista_t *lista) {
+    int num_items = 0;
+    lista_iterar(lista, imprimir_hasta_tres_items, &num_items);
+    print_test("se imprimieron 3 items ", num_items==CANT_ITEMS);
+    return num_items == CANT_ITEMS;
+}
+bool imprimir_suma(lista_t *lista) {
+    int suma = 0;
+    lista_iterar(lista, sumar_los_items, &suma);
+    // printf("suma=%d\n", suma);
+    print_test("Se sumaron los item ", suma == SUMA_ITEMS);
+    return suma == SUMA_ITEMS;
+}
+static void prueba_iter_interno(void) {
+    printf("INICIO DE PRUEBAS ITERADOR INTERNO\n");
+
+    lista_t *lista = lista_crear();
+    int items[] = {10, 20, 30, 40, 50, 60};
+
+    lista_insertar_ultimo(lista, &items[0]);
+    lista_insertar_ultimo(lista, &items[1]);
+    lista_insertar_ultimo(lista, &items[2]);
+    lista_insertar_ultimo(lista, &items[3]);
+    lista_insertar_ultimo(lista, &items[4]);
+    lista_insertar_ultimo(lista, &items[5]);
+
+
+    print_test("iterador interno sin corte", imprimir_suma(lista));
+    print_test("iterador interno con corte", imprimir_iter_interno(lista));
+    print_test("Aplicar dos veces el iterador", imprimir_iter_interno(lista));
+    lista_destruir(lista, NULL);
+}
 void pruebas_lista_estudiante() {
     prueba_lista_vacia();
     prueba_lista_ver_primero_vacia_es_invalido();
@@ -306,15 +373,15 @@ void pruebas_lista_estudiante() {
     prueba_lista_volumen();
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
-    // prueba_alistar_un_elemento();
-    // prueba_lista_ver_tope_creada_es_invalido();
-    // prueba_alistar_pocos_elementos();
-    // prueba_lista_desalistar();
-    // prueba_lista_volumen();
-    // prueba_lista_desalistar_vacia_es_invalido();
-    // prueba_lista_desalistar_despues_de_alistar_y_desalistar_es_invalido();
-    // prueba_lista_ver_tope_despues_de_alistar_y_desalistar_es_invalido();
-    // prueba_lista_alistar_null();
+    prueba_lista_imprimir_iter_externo();
+    prueba_iter_externo_insertar_al_ser_creado();
+    prueba_iter_externo_insertar_al_final();
+    prueba_iter_externo_borrar_al_final();
+    prueba_iter_externo_borrar_al_crear();
+    prueba_iter_externo_insertar_medio();
+    prueba_iter_externo_borrar_medio();
+    prueba_iter_externo_borrar();
+    prueba_iter_interno();
 }
 
 
