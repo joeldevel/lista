@@ -141,17 +141,16 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
 	  //         lista_borrar_primero(lista);
 	  //     }
     // }
-  	free(lista->primero);
-  	free(lista->ultimo);
+  	// free(lista->primero);
+  	// free(lista->ultimo);
   	free(lista);
 }
 
 // El iterador
 void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra) {
     nodo_t *n = lista->primero;
-    bool seguir = true;
-    while (n && seguir) {
-        seguir = visitar(n->dato,extra);
+    // bool seguir = true;
+    while (n && visitar(n->dato,extra)) {
         n = n->siguiente;
     }
     // free(n);
