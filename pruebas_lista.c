@@ -154,7 +154,8 @@ static void prueba_lista_imprimir_iter_externo(void) {
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
-    if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsecion oK\n");
+    bool ok =  lista_iter_insertar(iter, &items[1]);
+    print_test("insercion con iterador externo", ok);
     lista_iter_insertar(iter, &items[2]);
     lista_iter_insertar(iter, &items[3]);
 

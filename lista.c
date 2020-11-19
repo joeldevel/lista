@@ -192,35 +192,39 @@ bool lista_iter_al_final(const lista_iter_t *iter) {
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
     nodo_t *nodo_a_insertar = crear_nodo(dato);
     if (!nodo_a_insertar) return false;
+    
     // lista vacia
     if (lista_iter_largo(iter) == 0) {
-        *iter->primero_lista = nodo_a_insertar;
-        *iter->ultimo_lista = nodo_a_insertar;
-        iter->actual = iter->primero_lista;
+       *iter->ultimo_lista = nodo_a_insertar;
+        *iter->primero_lista = nodo_a_insertar; //R
+        iter->actual = iter->primero_lista; //R
         iter->anterior = NULL;
-        *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-        return true;
+        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+        // return true;
     }
     // insertar al principio
-    if (iter->anterior == NULL) {
+    else if (iter->anterior == NULL) {
         nodo_a_insertar->siguiente = *iter->primero_lista;
-        *iter->primero_lista = nodo_a_insertar;
-        iter->actual = iter->primero_lista;
-        *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-        return true;
+        *iter->primero_lista = nodo_a_insertar; // R
+        iter->actual = iter->primero_lista; // R
+        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+        // return true;
     }
     // insertar en el medio
-    if (iter->actual != NULL && iter->anterior != NULL) {
+    else if (iter->actual != NULL && iter->anterior != NULL) {
         nodo_a_insertar->siguiente = *iter->actual;
         ((*iter->anterior)->siguiente) = nodo_a_insertar;
         *iter->actual = nodo_a_insertar;
-        *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
-        return true;
+        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
+        // return true;
     }
     // insertar al final
-    ((*iter->ultimo_lista)->siguiente) = nodo_a_insertar;
-    *iter->ultimo_lista = nodo_a_insertar;
-    iter->actual = iter->ultimo_lista;
+    else  {
+       ((*iter->ultimo_lista)->siguiente) = nodo_a_insertar;
+       *iter->ultimo_lista = nodo_a_insertar;
+       iter->actual = iter->ultimo_lista;
+    }
+
     *(iter->tam_lista)=(*(size_t*)iter->tam_lista)+1;
     return true;
 }
