@@ -94,19 +94,22 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
     if (lista_esta_vacia(lista)) {
         lista->primero = nodo;
         lista->ultimo = nodo;
-        lista->largo++;
-        return true;
+        // lista->largo++;
+        // return true;
     }
-    lista->ultimo->siguiente = nodo;
-    lista->ultimo = lista->ultimo->siguiente;
+    else {
+        lista->ultimo->siguiente = nodo;
+        lista->ultimo = lista->ultimo->siguiente;
+    }
     lista->largo++;
     return true;
 }
 
 void *lista_ver_primero(const lista_t *lista) {
     if (lista->primero== NULL) return NULL;
-    if (lista_esta_vacia(lista)) return NULL;
-    return lista->primero->dato;
+    // if (lista_esta_vacia(lista)) return NULL;
+    // return lista->primero->dato;
+    return lista_esta_vacia(lista) ? NULL : lista->primero->dato;
 }
 
 void *lista_ver_ultimo(const lista_t *lista) {
