@@ -5,11 +5,13 @@ typedef struct nodo {
     void *dato;
     struct nodo *siguiente_nodo;
 } nodo_t;
+
 typedef struct lista {
     struct nodo *primer_elemento;
     struct nodo *ultimo_elemento;
     size_t largo;
 } lista_t;
+
 typedef struct lista_iter {
     struct nodo **actual;
     struct nodo **anterior;
@@ -17,6 +19,7 @@ typedef struct lista_iter {
     struct nodo **ultimo_elemento_lista;
     size_t *tam_lista;
 } lista_iter_t;
+
 // funcion auxiliar
 nodo_t *crear_nodo(void *valor) {
     nodo_t *nodo = malloc(sizeof(nodo_t));
