@@ -4,8 +4,8 @@
 #include<stdio.h>
 
 // para el iterador interno
-#define CANT_ITEMS  3
-#define SUMA_ITEMS  210
+const int CANT_ITEMS = 3;
+const int SUMA_ITEMS = 210;
 
 /* Pruebas para una lista vacía. */
 static void prueba_lista_vacia(void) {
@@ -154,8 +154,7 @@ static void prueba_lista_imprimir_iter_externo(void) {
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
-    bool ok =  lista_iter_insertar(iter, &items[1]);
-    print_test("insercion con iterador externo", ok);
+    if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsecion oK\n");
     lista_iter_insertar(iter, &items[2]);
     lista_iter_insertar(iter, &items[3]);
 
