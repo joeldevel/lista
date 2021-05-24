@@ -146,6 +146,7 @@ static void prueba_lista_de_pilas(void) {
     lista_destruir(l, NULL);
 }
 
+/*
 static void prueba_lista_imprimir_iter_externo(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
 
@@ -318,6 +319,7 @@ static void prueba_iter_externo_borrar(void) {
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
+*/
 //  funciones para probar el iterador interno
 // funcion con corte
 bool imprimir_hasta_tres_items(void *elemento, void *extra) {
@@ -345,6 +347,7 @@ bool imprimir_suma(lista_t *lista) {
     print_test("Se sumaron los item ", suma == SUMA_ITEMS);
     return suma == SUMA_ITEMS;
 }
+
 static void prueba_iter_interno(void) {
     printf("INICIO DE PRUEBAS ITERADOR INTERNO\n");
 
@@ -373,14 +376,14 @@ void pruebas_lista_estudiante() {
     prueba_lista_volumen();
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
-    prueba_lista_imprimir_iter_externo();
-    prueba_iter_externo_insertar_al_ser_creado();
-    prueba_iter_externo_insertar_al_final();
-    prueba_iter_externo_borrar_al_final();
-    prueba_iter_externo_borrar_al_crear();
-    prueba_iter_externo_insertar_medio();
-    prueba_iter_externo_borrar_medio();
-    prueba_iter_externo_borrar();
+    // prueba_lista_imprimir_iter_externo();
+    // prueba_iter_externo_insertar_al_ser_creado();
+    // prueba_iter_externo_insertar_al_final();
+    // prueba_iter_externo_borrar_al_final();
+    // prueba_iter_externo_borrar_al_crear();
+    // prueba_iter_externo_insertar_medio();
+    // prueba_iter_externo_borrar_medio();
+    // prueba_iter_externo_borrar();
     prueba_iter_interno();
 }
 

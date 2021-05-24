@@ -133,7 +133,7 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
 /* *****************************************************************
  *                    PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
- 
+
 lista_iter_t *lista_iter_crear(lista_t *lista) {
     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
     if (!iter) return NULL;
@@ -148,6 +148,7 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     iter->actual = &lista->primer_elemento;
     return iter;
 }
+/*
 size_t lista_iter_largo(const lista_iter_t * iter) {
     return *(size_t*)iter->tam_lista;
 }
@@ -262,3 +263,4 @@ void *lista_iter_borrar(lista_iter_t *iter) {
 
     // return NULL;
 }
+*/
