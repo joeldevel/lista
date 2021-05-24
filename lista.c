@@ -11,11 +11,14 @@ typedef struct lista {
     size_t largo;
 } lista_t;
 typedef struct lista_iter {
-    struct nodo **actual;
-    struct nodo **anterior;
-    struct nodo **primer_elemento_lista;
-    struct nodo **ultimo_elemento_lista;
-    size_t *tam_lista;
+    // struct nodo **actual;
+    // struct nodo **anterior;
+    // struct nodo **primer_elemento_lista;
+    // struct nodo **ultimo_elemento_lista;
+    nodo_t *actual;
+    nodo_t *anterior;
+    lista_t *lista;
+    // size_t *tam_lista;
 } lista_iter_t;
 // funcion auxiliar
 nodo_t *crear_nodo(void *valor) {
@@ -137,15 +140,18 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
 lista_iter_t *lista_iter_crear(lista_t *lista) {
     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
     if (!iter) return NULL;
-    iter->primer_elemento_lista = &lista->primer_elemento;
-    iter->ultimo_elemento_lista = &lista->ultimo_elemento;
-    iter->tam_lista = &lista->largo;
+    iter->lista = lista;
+    iter->actual = lista->primer_elemento;
     iter->anterior = NULL;
-    if (lista_esta_vacia(lista)) {
-        iter->actual = &lista->primer_elemento;
-        return iter;
-    }
-    iter->actual = &lista->primer_elemento;
+    // iter->primer_elemento_lista = &lista->primer_elemento;
+    // iter->ultimo_elemento_lista = &lista->ultimo_elemento;
+    // iter->tam_lista = &lista->largo;
+    // iter->anterior = NULL;
+    // if (lista_esta_vacia(lista)) {
+    //     iter->actual = &lista->primer_elemento;
+    //     return iter;
+    // }
+    // iter->actual = &lista->primer_elemento;
     return iter;
 }
 /*
