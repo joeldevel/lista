@@ -41,20 +41,23 @@ lista_t *lista_crear(void) {
 bool lista_esta_vacia(const lista_t *lista) {
     return lista->largo == 0;
 }
+
 bool lista_insertar_primero(lista_t *lista, void *dato) {
     nodo_t *nodo = crear_nodo(dato);
     if (!nodo) return false;
     if (lista_esta_vacia(lista)) {
-        lista->primer_elemento = nodo;
+        // lista->primer_elemento = nodo;
         lista->ultimo_elemento = nodo;
-        lista->largo++;
-        return true;
+        // lista->largo++;
+        // return true;
+    } else {
+      nodo->siguiente_nodo = lista->primer_elemento;
     }
-    nodo->siguiente_nodo = lista->primer_elemento;
     lista->primer_elemento = nodo;
     lista->largo++;
     return true;
 }
+
 void *lista_borrar_primero(lista_t *lista) {
     if (lista_esta_vacia(lista)) return NULL;
     nodo_t *nodo_aux = crear_nodo(NULL);
@@ -63,7 +66,8 @@ void *lista_borrar_primero(lista_t *lista) {
     lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
     lista->largo--;
     if (lista_esta_vacia(lista)) {
-        lista->ultimo_elemento = NULL;
+        // lista->ultimo_elemento = NULL;
+        lista->ultimo_elemento = lista->primer_elemento;
     }
     free(nodo_aux->siguiente_nodo);
     free(nodo_aux);
@@ -74,18 +78,19 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
     nodo_t *nodo = crear_nodo(dato);
     if (!nodo) return false;
     if (lista_esta_vacia(lista)) {
-        lista->primer_elemento = nodo;
-        lista->ultimo_elemento = nodo;
-        lista->largo++;
-        return true;
+        lista->primer_elemento = lista->ultimo_elemento = nodo;
+        // lista->ultimo_elemento = nodo;
+        // lista->largo++;
+        // return true;
+    } else {
+       lista->ultimo_elemento->siguiente_nodo = nodo;
+       lista->ultimo_elemento = lista->ultimo_elemento->siguiente_nodo;
     }
-    lista->ultimo_elemento->siguiente_nodo = nodo;
-    lista->ultimo_elemento = lista->ultimo_elemento->siguiente_nodo;
     lista->largo++;
     return true;
 }
 void *lista_ver_primero(const lista_t *lista) {
-    if (lista->primer_elemento== NULL) return NULL;
+    // if (lista->primer_elemento == NULL) return NULL;
     if (lista_esta_vacia(lista)) return NULL;
     return lista->primer_elemento->dato;
 }
@@ -97,19 +102,20 @@ size_t lista_largo(const lista_t *lista) {
     return lista->largo;
 }
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
-    if (destruir_dato == NULL) {
-       while (lista->primer_elemento != NULL) {
+    // if (destruir_dato == NULL) {
+       while (lista->primer_elemento) {
+            if (destruir_dato) destruir_dato(lista->primer_elemento->dato);
            lista_borrar_primero(lista);
        }
-    }
-    else {
-        while (lista->primer_elemento) {
-            destruir_dato(lista->primer_elemento->dato);
-	          lista_borrar_primero(lista);
-	      }
-    }
-  	free(lista->primer_elemento);
-  	free(lista->ultimo_elemento);
+    // }
+    // else {
+        // while (lista->primer_elemento) {
+            // destruir_dato(lista->primer_elemento->dato);
+	          // lista_borrar_primero(lista);
+	      // }
+    // }
+  	// free(lista->primer_elemento);
+  	// free(lista->ultimo_elemento);
   	free(lista);
 }
 
@@ -127,6 +133,7 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
 /* *****************************************************************
  *                    PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
+ 
 lista_iter_t *lista_iter_crear(lista_t *lista) {
     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
     if (!iter) return NULL;
