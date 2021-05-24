@@ -182,8 +182,6 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
 }
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
-  nodo_t *nodo_a_insertar = crear_nodo(dato);
-  if (!nodo_a_insertar) return false;
   // lista vacia
   if( lista_esta_vacia(iter->lista)) {
       lista_insertar_primero(iter->lista, dato);
@@ -201,10 +199,11 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
       return true;
   }
   // insertar en el medio
-  nodo_t *nuevo_nodo = crear_nodo(dato);
-  nuevo_nodo->siguiente_nodo = iter->actual;
-  iter->anterior = nuevo_nodo;
-  iter->actual = nuevo_nodo;
+  nodo_t *nodo_a_insertar = crear_nodo(dato);
+  if (!nodo_a_insertar) return false;
+  nodo_a_insertar->siguiente_nodo = iter->actual;
+  iter->anterior->siguiente_nodo = nodo_a_insertar;
+  iter->actual = iter->actual->siguiente_nodo;
   iter->lista->largo++;
   return true;
 }

@@ -146,7 +146,6 @@ static void prueba_lista_de_pilas(void) {
     lista_destruir(l, NULL);
 }
 
-/*
 static void prueba_lista_imprimir_iter_externo(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
 
@@ -155,13 +154,14 @@ static void prueba_lista_imprimir_iter_externo(void) {
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
-    if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsecion oK\n");
+    if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsercion oK\n");
     lista_iter_insertar(iter, &items[2]);
     lista_iter_insertar(iter, &items[3]);
 
     lista_destruir(super, NULL);
     lista_iter_destruir(iter);
 }
+/*
 
 // Al insertar un elemento en la posición en la que se crea el iterador, efectivamente se inserta al principio.
 static void prueba_iter_externo_insertar_al_ser_creado(void) {
@@ -376,7 +376,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_volumen();
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
-    // prueba_lista_imprimir_iter_externo();
+    prueba_lista_imprimir_iter_externo();
     // prueba_iter_externo_insertar_al_ser_creado();
     // prueba_iter_externo_insertar_al_final();
     // prueba_iter_externo_borrar_al_final();
