@@ -155,12 +155,28 @@ static void prueba_lista_imprimir_iter_externo(void) {
     bool ok = true;
     ok &= !lista_iter_ver_actual(iter);
     print_test("lista esta vacia: ",ok);
+    print_test("No puede avanzar, lista vacia", !lista_iter_avanzar(iter));
+
+    // ok = true;
 
     lista_iter_insertar(iter, &items[0]);
 
     ok &= *(size_t*)lista_iter_ver_actual(iter) == 10;
     ok &= *(size_t*)lista_ver_primero(lista) == 10;
     print_test("insercion en lista vacia OK", ok);
+
+    // probar el avance
+    lista_insertar_ultimo(lista, &items[1]);
+    lista_iter_avanzar(iter);
+    ok &= *(size_t*)lista_iter_ver_actual(iter) == 20;
+
+    lista_insertar_ultimo(lista, &items[2]);
+    lista_iter_avanzar(iter);
+    ok &= *(size_t*)lista_iter_ver_actual(iter) == 340;
+    print_test("lista iter avazar", ok);
+    lista_iter_avanzar(iter);
+    print_test("No puede avanzar, iter al final", !lista_iter_avanzar(iter));
+
     // if(lista_iter_insertar(iter, &items[1])) {
     //     printf("\t\tinsercion oK\n");
     // }

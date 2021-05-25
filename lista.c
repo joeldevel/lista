@@ -153,7 +153,7 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     //     return iter;
     // }
     // iter->actual = &lista->primer_elemento;
-    printf("Se crea el iterador: %p==%p\n",iter->lista, lista );
+    // printf("Se crea el iterador: %p==%p\n",iter->lista, lista );
     return iter;
 }
 size_t lista_iter_largo(const lista_iter_t * iter) {
@@ -165,28 +165,34 @@ void lista_iter_destruir(lista_iter_t *iter) {
 }
 
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
+    //1 lista vacia
     if (lista_esta_vacia(iter->lista)) {
       printf("la lista esta vacia\n" );
       return NULL;
     }
+    //2 al final de la lista
     if (lista_iter_al_final(iter)) return NULL;
     // printf("ver actual  no esta en el final\n");
+    // 3 caso general
     return iter->actual->dato;
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
+    // tal vez esto es redundante
     if (lista_esta_vacia(iter->lista)) return true;
-    printf("lista_iter_al_final, iter->actual->dato =%lu\n", *(size_t*)iter->actual->dato);
+    // printf("lista_iter_al_final, iter->actual->dato =%lu\n", *(size_t*)iter->actual->dato);
     // if (iter->actual->dato==NULL && iter->anterior) return true;
-    return iter->actual->dato == NULL;
+    return iter->actual == NULL;
 }
 
 bool lista_iter_avanzar(lista_iter_t *iter) {
-    if (lista_esta_vacia(iter->lista) || iter->actual==NULL) return false;
+    // lista vacia o iterador al final, no puedo avanzar
+    if (lista_esta_vacia(iter->lista) || lista_iter_al_final(iter)) return false;
     //1 solo elemento, anterior es null
     if(iter->actual && !iter->anterior) {
         iter->anterior = iter->actual;
     } else {
+      // caso general
         iter->anterior = iter->anterior->siguiente_nodo;
     }
     iter->actual = iter->actual->siguiente_nodo;
