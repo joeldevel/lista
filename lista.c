@@ -1,5 +1,6 @@
 #include "lista.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct nodo {
     void *dato;
@@ -152,39 +153,53 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     //     return iter;
     // }
     // iter->actual = &lista->primer_elemento;
+    printf("Se crea el iterador: %p==%p\n",iter->lista, lista );
     return iter;
 }
 size_t lista_iter_largo(const lista_iter_t * iter) {
-    return *(size_t*)iter->lista->largo;
+    return (size_t)iter->lista->largo;
 }
 
 void lista_iter_destruir(lista_iter_t *iter) {
-  free(iter);
+    free(iter);
 }
+
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
-    if (lista_esta_vacia(iter->lista)) return NULL;
+    if (lista_esta_vacia(iter->lista)) {
+      printf("la lista esta vacia\n" );
+      return NULL;
+    }
     if (lista_iter_al_final(iter)) return NULL;
+    printf("ver actual  no esta en el final\n");
     return iter->actual->dato;
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
     if (lista_esta_vacia(iter->lista)) return true;
-    if (iter->actual == NULL) return true;
+    if (iter->actual == NULL && iter->anterior!=NULL) return true;
     return iter->actual == NULL;
 }
 
 bool lista_iter_avanzar(lista_iter_t *iter) {
     if (lista_esta_vacia(iter->lista) || iter->actual==NULL) return false;
-    //1 solo elemento
-    iter->anterior =iter->anterior->siguiente_nodo;
+    //1 solo elemento, anterior es null
+    if(iter->actual && !iter->anterior) {
+        iter->anterior = iter->actual;
+    } else {
+        iter->anterior = iter->anterior->siguiente_nodo;
+    }
     iter->actual = iter->actual->siguiente_nodo;
     return true;
 }
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
+  nodo_t *nodo_a_insertar = crear_nodo(dato);
+  if(!nodo_a_insertar) return false;
   // lista vacia
   if( lista_esta_vacia(iter->lista)) {
-      lista_insertar_primero(iter->lista, dato);
+      printf("Se inserta en lista vacia: %p\n", dato);
+      iter->lista->primer_elemento = iter->lista->ultimo_elemento = nodo_a_insertar;
+      iter->lista->largo++;
       return true;
   }
   // insertar al final
@@ -199,7 +214,6 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
       return true;
   }
   // insertar en el medio
-  nodo_t *nodo_a_insertar = crear_nodo(dato);
   if (!nodo_a_insertar) return false;
   nodo_a_insertar->siguiente_nodo = iter->actual;
   iter->anterior->siguiente_nodo = nodo_a_insertar;

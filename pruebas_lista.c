@@ -149,21 +149,28 @@ static void prueba_lista_de_pilas(void) {
 static void prueba_lista_imprimir_iter_externo(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
 
-    lista_t *super = lista_crear();
-    lista_iter_t * iter = lista_iter_crear(super);
-    int items[] = {10,20,340,39};
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    size_t items[] = {10,20,340,39};
+    bool ok = true;
 
     lista_iter_insertar(iter, &items[0]);
-    if(lista_iter_insertar(iter, &items[1])) printf("\t\tinsercion oK\n");
-    lista_iter_insertar(iter, &items[2]);
-    lista_iter_insertar(iter, &items[3]);
+    ok &= (size_t)lista_iter_ver_actual(iter) == 10;
+    ok &= *(size_t*)lista_ver_primero(lista) == 10;
+    print_test("insercion en lista vacia OK", ok);
+    // if(lista_iter_insertar(iter, &items[1])) {
+    //     printf("\t\tinsercion oK\n");
+    // }
+    // lista_iter_insertar(iter, &items[2]);
+    // lista_iter_insertar(iter, &items[3]);
 
-    lista_destruir(super, NULL);
+    lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
-/*
 
 // Al insertar un elemento en la posición en la que se crea el iterador, efectivamente se inserta al principio.
+
+/*
 static void prueba_iter_externo_insertar_al_ser_creado(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR AL SER CREADO\n");
 
@@ -172,7 +179,11 @@ static void prueba_iter_externo_insertar_al_ser_creado(void) {
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
-    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    printf("la dir de items[0] es: %p\n",&items[0] );
+    bool ok = (size_t)lista_iter_ver_actual(iter)==(size_t)lista_ver_primero(lista);
+
+    printf("%p==%lu? \n",lista_iter_ver_actual(iter),lista_ver_primero(lista));
+
     print_test("Insertar al ser creado inserta al principio", ok);
 
     lista_destruir(lista, NULL);
