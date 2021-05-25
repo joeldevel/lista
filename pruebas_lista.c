@@ -177,11 +177,11 @@ static void prueba_lista_imprimir_iter_externo(void) {
     lista_iter_avanzar(iter);
     print_test("No puede avanzar, iter al final", !lista_iter_avanzar(iter));
 
-    // if(lista_iter_insertar(iter, &items[1])) {
-    //     printf("\t\tinsercion oK\n");
-    // }
-    // lista_iter_insertar(iter, &items[2]);
-    // lista_iter_insertar(iter, &items[3]);
+    lista_iter_insertar(iter, &items[3]);
+    ok &= *(size_t*)lista_iter_ver_actual(iter) == 39;
+    ok &= *(size_t*)lista_ver_ultimo(lista) == 39;
+    print_test("insercion al final OK", ok);
+
 
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);

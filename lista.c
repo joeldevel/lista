@@ -212,6 +212,7 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
   }
   // insertar al final
   if( iter->actual == NULL ) {
+    free(nodo_a_insertar);
     lista_insertar_ultimo(iter->lista, dato);
     iter->actual = iter->lista->ultimo_elemento;
     return true;
