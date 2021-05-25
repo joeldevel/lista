@@ -200,30 +200,32 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
 }
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
-  nodo_t *nodo_a_insertar = crear_nodo(dato);
-  if(!nodo_a_insertar) return false;
   // lista vacia
   if( lista_esta_vacia(iter->lista)) {
-      printf("Se inserta en lista vacia: %p\n", dato);
-      iter->lista->primer_elemento = iter->lista->ultimo_elemento =
-      iter->actual = nodo_a_insertar;
-      iter->lista->largo++;
+      // printf("Se inserta en lista vacia: %p\n", dato);
+      lista_insertar_primero(iter->lista, dato);
+      // iter->lista->primer_elemento = iter->lista->ultimo_elemento =
+      // iter->actual = nodo_a_insertar;
+      // iter->lista->largo++;
+      iter->actual = iter->lista->primer_elemento;
+      // free(nodo_a_insertar);
       return true;
   }
-  // insertar al final
+  // insertar al final --lista no vacia
   if( iter->actual == NULL ) {
-    free(nodo_a_insertar);
-    lista_insertar_ultimo(iter->lista, dato);
-    iter->actual = iter->lista->ultimo_elemento;
-    return true;
+      // free(nodo_a_insertar);
+      lista_insertar_ultimo(iter->lista, dato);
+      iter->actual = iter->lista->ultimo_elemento;
+      return true;
   }
-  // insertar al principio
+  // insertar al principio --lista no vacia
   if( iter->anterior==NULL && iter->actual!=NULL) {
       lista_insertar_primero(iter->lista, dato);
       return true;
   }
-  // insertar en el medio
-  if (!nodo_a_insertar) return false;
+  // caso general
+  nodo_t *nodo_a_insertar = crear_nodo(dato);
+  if(!nodo_a_insertar) return false;
   nodo_a_insertar->siguiente_nodo = iter->actual;
   iter->anterior->siguiente_nodo = nodo_a_insertar;
   iter->actual = iter->actual->siguiente_nodo;
