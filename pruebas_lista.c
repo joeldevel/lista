@@ -153,9 +153,12 @@ static void prueba_lista_imprimir_iter_externo(void) {
     lista_iter_t * iter = lista_iter_crear(lista);
     size_t items[] = {10,20,340,39};
     bool ok = true;
+    ok &= !lista_iter_ver_actual(iter);
+    print_test("lista esta vacia: ",ok);
 
     lista_iter_insertar(iter, &items[0]);
-    ok &= (size_t)lista_iter_ver_actual(iter) == 10;
+
+    ok &= *(size_t*)lista_iter_ver_actual(iter) == 10;
     ok &= *(size_t*)lista_ver_primero(lista) == 10;
     print_test("insercion en lista vacia OK", ok);
     // if(lista_iter_insertar(iter, &items[1])) {

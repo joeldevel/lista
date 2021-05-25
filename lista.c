@@ -170,14 +170,15 @@ void *lista_iter_ver_actual(const lista_iter_t *iter) {
       return NULL;
     }
     if (lista_iter_al_final(iter)) return NULL;
-    printf("ver actual  no esta en el final\n");
+    // printf("ver actual  no esta en el final\n");
     return iter->actual->dato;
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
     if (lista_esta_vacia(iter->lista)) return true;
-    if (iter->actual == NULL && iter->anterior!=NULL) return true;
-    return iter->actual == NULL;
+    printf("lista_iter_al_final, iter->actual->dato =%lu\n", *(size_t*)iter->actual->dato);
+    // if (iter->actual->dato==NULL && iter->anterior) return true;
+    return iter->actual->dato == NULL;
 }
 
 bool lista_iter_avanzar(lista_iter_t *iter) {
@@ -198,7 +199,8 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
   // lista vacia
   if( lista_esta_vacia(iter->lista)) {
       printf("Se inserta en lista vacia: %p\n", dato);
-      iter->lista->primer_elemento = iter->lista->ultimo_elemento = nodo_a_insertar;
+      iter->lista->primer_elemento = iter->lista->ultimo_elemento =
+      iter->actual = nodo_a_insertar;
       iter->lista->largo++;
       return true;
   }
