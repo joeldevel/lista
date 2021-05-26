@@ -153,18 +153,12 @@ static void prueba_lista_iter_externo_recorrer(void) {
     int items[5] = {17,17, 17, 17, 17};
     for(int i=0; i<5; i++) {
         lista_insertar_primero(lista, &items[i]);
-        // printf("lista primero = %d\n", *(int*)lista_ver_primero(lista));
     }
     items[0] = 13;
-    // printf("items[0]=%d\n", items[0]);
     lista_iter_t * iter = lista_iter_crear(lista);
     int d = 0;
-    printf("lista primero = %d\n", *(int*)lista_ver_primero(lista));
-    printf("iter actual = %d\n", *(int*)lista_iter_ver_actual(iter));
     while( !lista_iter_al_final(iter)) {
-        // printf("dentro del while\n" );
         d = *(int*)lista_iter_ver_actual(iter);
-        printf("iter actual = %d\n", *(int*)lista_iter_ver_actual(iter));
         lista_iter_avanzar(iter);
     }
     printf("d = %d\n", d);
@@ -173,7 +167,7 @@ static void prueba_lista_iter_externo_recorrer(void) {
     lista_iter_destruir(iter);
 }
 
-
+/*
 static void prueba_lista_iter_externo_recorrer2(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO RECORRER 2\n");
     // si el iterador se crea antes de poblar la lista, no funciona
@@ -194,7 +188,7 @@ static void prueba_lista_iter_externo_recorrer2(void) {
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
-
+*/
 static void prueba_lista_imprimir_iter_externo(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
 
@@ -248,16 +242,14 @@ static void prueba_iter_externo_insertar_al_ser_creado(void) {
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
-    // printf("la dir de items[0] es: %p\n",&items[0] );
     bool ok = (size_t)lista_iter_ver_actual(iter)==(size_t)lista_ver_primero(lista);
-
-    // printf("%p==%p? \n",lista_iter_ver_actual(iter),lista_ver_primero(lista));
 
     print_test("Insertar al ser creado inserta al principio", ok);
 
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
+
 // Insertar un elemento cuando el iterador está al final efectivamente es equivalente a insertar al final.
 static void prueba_iter_externo_insertar_al_final(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR AL FINAL\n");
@@ -319,10 +311,8 @@ static void prueba_iter_externo_borrar_al_crear(void) {
     int items[] = {10,20,340,39};
     //
     lista_iter_insertar(iter, &items[0]);
-    // lista_iter_insertar(iter, &items[3]);
     ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
 
-    // print_test("Insertar al ser creado inserta al principio", ok);
     lista_iter_borrar(iter);
     print_test("Lista esta vacia: ", lista_esta_vacia(lista));
 
@@ -447,7 +437,6 @@ bool imprimir_iter_interno(lista_t *lista) {
 bool imprimir_suma(lista_t *lista) {
     int suma = 0;
     lista_iterar(lista, sumar_los_items, &suma);
-    // printf("suma=%d\n", suma);
     print_test("Se sumaron los item ", suma == SUMA_ITEMS);
     return suma == SUMA_ITEMS;
 }
@@ -490,7 +479,7 @@ void pruebas_lista_estudiante() {
     prueba_iter_externo_borrar();
     prueba_iter_interno();
     prueba_lista_iter_externo_recorrer();
-    prueba_lista_iter_externo_recorrer2();
+    // prueba_lista_iter_externo_recorrer2();
 }
 
 
