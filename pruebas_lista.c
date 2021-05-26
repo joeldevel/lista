@@ -146,6 +146,55 @@ static void prueba_lista_de_pilas(void) {
     lista_destruir(l, NULL);
 }
 
+static void prueba_lista_iter_externo_recorrer(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO RECORRER\n");
+
+    lista_t *lista = lista_crear();
+    int items[5] = {17,17, 17, 17, 17};
+    for(int i=0; i<5; i++) {
+        lista_insertar_primero(lista, &items[i]);
+        // printf("lista primero = %d\n", *(int*)lista_ver_primero(lista));
+    }
+    items[0] = 13;
+    // printf("items[0]=%d\n", items[0]);
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int d = 0;
+    printf("lista primero = %d\n", *(int*)lista_ver_primero(lista));
+    printf("iter actual = %d\n", *(int*)lista_iter_ver_actual(iter));
+    while( !lista_iter_al_final(iter)) {
+        // printf("dentro del while\n" );
+        d = *(int*)lista_iter_ver_actual(iter);
+        printf("iter actual = %d\n", *(int*)lista_iter_ver_actual(iter));
+        lista_iter_avanzar(iter);
+    }
+    printf("d = %d\n", d);
+    print_test("iter recorre la lista ", d == items[0]);
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+
+
+static void prueba_lista_iter_externo_recorrer2(void) {
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO RECORRER 2\n");
+    // si el iterador se crea antes de poblar la lista, no funciona
+    lista_t *lista = lista_crear();
+    lista_iter_t * iter = lista_iter_crear(lista);
+    int items[5] = {17,17, 17, 17, 17};
+    for(int i=0; i<5; i++) {
+        lista_insertar_primero(lista, &items[i]);
+    }
+    items[0] = 13;
+    int d = 0;
+    while( !lista_iter_al_final(iter)) {
+        d = *(int*)lista_iter_ver_actual(iter);
+        lista_iter_avanzar(iter);
+    }
+    printf("d = %d\n", d);
+    print_test("iter recorre la lista ", d == items[0]);
+    lista_destruir(lista, NULL);
+    lista_iter_destruir(iter);
+}
+
 static void prueba_lista_imprimir_iter_externo(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO\n");
 
@@ -440,6 +489,8 @@ void pruebas_lista_estudiante() {
     prueba_iter_externo_borrar_medio();
     prueba_iter_externo_borrar();
     prueba_iter_interno();
+    prueba_lista_iter_externo_recorrer();
+    prueba_lista_iter_externo_recorrer2();
 }
 
 

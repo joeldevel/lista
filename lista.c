@@ -12,10 +12,6 @@ typedef struct lista {
     size_t largo;
 } lista_t;
 typedef struct lista_iter {
-    // struct nodo **actual;
-    // struct nodo **anterior;
-    // struct nodo **primer_elemento_lista;
-    // struct nodo **ultimo_elemento_lista;
     nodo_t *actual;
     nodo_t *anterior;
     lista_t *lista;
@@ -109,10 +105,10 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
     // if (destruir_dato == NULL) {
        while (lista->primer_elemento) {
             if (destruir_dato) {
-                printf("en destruir dato\n" );
+                // printf("en destruir dato\n" );
                 destruir_dato(lista->primer_elemento->dato);
             }
-            printf("fuera del if destruir dato\n" );
+            // printf("fuera del if destruir dato\n" );
            lista_borrar_primero(lista);
        }
     // }
@@ -146,7 +142,7 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     lista_iter_t *iter = malloc(sizeof(lista_iter_t));
     if (!iter) return NULL;
     iter->lista = lista;
-    iter->actual = lista->primer_elemento;
+    iter->actual = iter->lista->primer_elemento;
     iter->anterior = NULL;
 
     return iter;
@@ -173,10 +169,12 @@ void *lista_iter_ver_actual(const lista_iter_t *iter) {
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
+    // printf("lista iter al final\n" );
     // tal vez esto es redundante
     // if (lista_esta_vacia(iter->lista)) return true;
     // printf("lista_iter_al_final, iter->actual->dato =%lu\n", *(size_t*)iter->actual->dato);
     // if (iter->actual->dato==NULL && iter->anterior) return true;
+    // printf("iter->actual==NULL? : %d\n", iter->actual==NULL);
     return iter->actual == NULL;
 }
 
@@ -186,11 +184,11 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
     if (lista_esta_vacia(iter->lista) || lista_iter_al_final(iter)) return false;
     //1 solo elemento, anterior es null
     if(iter->actual && !iter->anterior) {
-      printf("if es true...\n" );
+      // printf("if es true...\n" );
         iter->anterior = iter->actual;
     } else {
       // caso general
-      printf("if es false...\n" );
+      // printf("if es false...\n" );
         iter->anterior = iter->anterior->siguiente_nodo;
     }
     iter->actual = iter->actual->siguiente_nodo;
