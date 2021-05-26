@@ -187,9 +187,10 @@ static void prueba_lista_imprimir_iter_externo(void) {
     lista_iter_destruir(iter);
 }
 
+
+
 // Al insertar un elemento en la posición en la que se crea el iterador, efectivamente se inserta al principio.
 
-/*
 static void prueba_iter_externo_insertar_al_ser_creado(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR AL SER CREADO\n");
 
@@ -198,10 +199,10 @@ static void prueba_iter_externo_insertar_al_ser_creado(void) {
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
-    printf("la dir de items[0] es: %p\n",&items[0] );
+    // printf("la dir de items[0] es: %p\n",&items[0] );
     bool ok = (size_t)lista_iter_ver_actual(iter)==(size_t)lista_ver_primero(lista);
 
-    printf("%p==%lu? \n",lista_iter_ver_actual(iter),lista_ver_primero(lista));
+    // printf("%p==%p? \n",lista_iter_ver_actual(iter),lista_ver_primero(lista));
 
     print_test("Insertar al ser creado inserta al principio", ok);
 
@@ -213,13 +214,13 @@ static void prueba_iter_externo_insertar_al_final(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR AL FINAL\n");
 
     lista_t *lista = lista_crear();
-    lista_iter_t * iter = lista_iter_crear(lista);
+    lista_iter_t *iter = lista_iter_crear(lista);
     int items[] = {10,20,340,39};
 
     lista_iter_insertar(iter, &items[0]);
     lista_iter_insertar(iter, &items[1]);
     lista_iter_insertar(iter, &items[2]);
-    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    bool ok = (size_t)lista_iter_ver_actual(iter)==(size_t)lista_ver_primero(lista);
     print_test("Insertar al ser creado inserta al principio", ok);
     lista_iter_avanzar(iter);
     lista_iter_avanzar(iter);
@@ -230,12 +231,12 @@ static void prueba_iter_externo_insertar_al_final(void) {
     print_test("Insertar al final,", ok);
     print_test("Actual NO esta al final ", !lista_iter_al_final(iter));
     lista_iter_avanzar(iter);
-    print_test("Actual es al final ", lista_iter_al_final(iter));
+    print_test("Actual est al final ", lista_iter_al_final(iter));
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
-// Insertar un elemento en el medio se hace en la posición correcta.
 static void prueba_iter_externo_insertar_medio(void) {
+// Insertar un elemento en el medio se hace en la posición correcta.
   printf("INICIO DE PRUEBAS ITERADOR EXTERNO INSERTAR EN MEDIO\n");
 
   lista_t *lista = lista_crear();
@@ -257,6 +258,7 @@ static void prueba_iter_externo_insertar_medio(void) {
   lista_destruir(lista, NULL);
   lista_iter_destruir(iter);
 }
+/*
 // Al remover el elemento cuando se crea el iterador, cambia el primer elemento de la lista.
 static void prueba_iter_externo_borrar_al_crear(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR AL CREAR\n");
@@ -407,11 +409,11 @@ void pruebas_lista_estudiante() {
     prueba_lista_se_puede_insertar_null();
     prueba_lista_de_pilas();
     prueba_lista_imprimir_iter_externo();
-    // prueba_iter_externo_insertar_al_ser_creado();
-    // prueba_iter_externo_insertar_al_final();
+    prueba_iter_externo_insertar_al_ser_creado();
+    prueba_iter_externo_insertar_al_final();
     // prueba_iter_externo_borrar_al_final();
+    prueba_iter_externo_insertar_medio();
     // prueba_iter_externo_borrar_al_crear();
-    // prueba_iter_externo_insertar_medio();
     // prueba_iter_externo_borrar_medio();
     // prueba_iter_externo_borrar();
     prueba_iter_interno();

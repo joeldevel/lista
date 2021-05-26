@@ -221,6 +221,7 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
   // insertar al principio --lista no vacia
   if( iter->anterior==NULL && iter->actual!=NULL) {
       lista_insertar_primero(iter->lista, dato);
+      iter->actual = iter->lista->primer_elemento;
       return true;
   }
   // caso general
