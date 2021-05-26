@@ -108,7 +108,11 @@ size_t lista_largo(const lista_t *lista) {
 void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
     // if (destruir_dato == NULL) {
        while (lista->primer_elemento) {
-            if (destruir_dato) destruir_dato(lista->primer_elemento->dato);
+            if (destruir_dato) {
+                printf("en destruir dato\n" );
+                destruir_dato(lista->primer_elemento->dato);
+            }
+            printf("fuera del if destruir dato\n" );
            lista_borrar_primero(lista);
        }
     // }
@@ -144,16 +148,7 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
     iter->lista = lista;
     iter->actual = lista->primer_elemento;
     iter->anterior = NULL;
-    // iter->primer_elemento_lista = &lista->primer_elemento;
-    // iter->ultimo_elemento_lista = &lista->ultimo_elemento;
-    // iter->tam_lista = &lista->largo;
-    // iter->anterior = NULL;
-    // if (lista_esta_vacia(lista)) {
-    //     iter->actual = &lista->primer_elemento;
-    //     return iter;
-    // }
-    // iter->actual = &lista->primer_elemento;
-    // printf("Se crea el iterador: %p==%p\n",iter->lista, lista );
+
     return iter;
 }
 size_t lista_iter_largo(const lista_iter_t * iter) {
@@ -186,13 +181,16 @@ bool lista_iter_al_final(const lista_iter_t *iter) {
 }
 
 bool lista_iter_avanzar(lista_iter_t *iter) {
+  printf("entrando a iteravanzar...\n" );
     // lista vacia o iterador al final, no puedo avanzar
     if (lista_esta_vacia(iter->lista) || lista_iter_al_final(iter)) return false;
     //1 solo elemento, anterior es null
     if(iter->actual && !iter->anterior) {
+      printf("if es true...\n" );
         iter->anterior = iter->actual;
     } else {
       // caso general
+      printf("if es false...\n" );
         iter->anterior = iter->anterior->siguiente_nodo;
     }
     iter->actual = iter->actual->siguiente_nodo;
@@ -236,59 +234,60 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
 
 // /*
 void *lista_iter_borrar(lista_iter_t *iter) {
-    // borrar cuando el iterador est al final
+    printf("entrndo a iter borrar\n" );
+    // borrar cuando el iterador est al final o lista vacia
     if (iter->actual == NULL) return NULL;
-    // lista vacia
-    if (lista_iter_largo(iter) == 0) {
-        return NULL;
-    }
+
     // lista con 1 elemento
     if (lista_iter_largo(iter) == 1) {
+      printf("caso 1\n" );
         void *dato_a_devolver = lista_borrar_primero(iter->lista);
         iter->actual = iter->lista->primer_elemento;
-        // if ((*(iter->actual)) == NULL) return false;
-        // nodo_t *nodo_a_borrar = (*(iter->actual));
-        // void *dato_a_devolver = (*(iter->actual))->dato;
-        // *iter->primer_elemento_lista = NULL;
-        // *iter->ultimo_elemento_lista = NULL;
-        // iter->actual = iter->primer_elemento_lista;
-        // *(iter->tam_lista) = (*(size_t*)iter->tam_lista)-1;
-        // free(nodo_a_borrar);
         return dato_a_devolver;
-        // printf(" lista con 1 elem: dato a devolver %d\n", *(int *)dato_a_devolver);
-        // return NULL;
     }
-    // borrar al principio
-    // if (iter->anterior == NULL || (*iter->anterior) == NULL) {
-    //     nodo_t *nodo_a_borrar = (*(iter->actual));
-    //     void *dato_a_devolver = (*(iter->actual))->dato;
-    //
-    //     *iter->primer_elemento_lista = (*iter->primer_elemento_lista)->siguiente_nodo;
-    //     iter->actual = iter->primer_elemento_lista;
-    //     *(iter->tam_lista)=(*(size_t*)iter->tam_lista)-1;
-    //     free(nodo_a_borrar);
-    //     return dato_a_devolver;
-    // }
-    // borrar al final
-    // if (((*iter->actual)->siguiente_nodo) == NULL && !(iter->anterior == NULL)) {
-    //     nodo_t *nodo_a_borrar = (*(iter->actual));
-    //     void *dato_a_devolver = (*(iter->actual))->dato;
-    //     *iter->ultimo_elemento_lista = *iter->anterior;
-    //     (*iter->ultimo_elemento_lista)->siguiente_nodo = NULL;
-    //     *(iter->tam_lista)=(*(size_t*)iter->tam_lista)-1;
-    //     free(nodo_a_borrar);
-    //     return dato_a_devolver;
-    // }
-    // borrar en el medio
-    // if (iter->anterior != NULL && ((*iter->actual)->siguiente_nodo) != NULL) {
-        // nodo_t *nodo_a_borrar = (*(iter->actual));
-        // void *dato_a_devolver = (*(iter->actual))->dato;
-        // (*iter->anterior)->siguiente_nodo= (*iter->actual)->siguiente_nodo;
-        // free( nodo_a_borrar);
-        // iter->actual = &(*iter->anterior)->siguiente_nodo;
-        // *(iter->tam_lista)=(*(size_t*)iter->tam_lista)-1;
-        // return dato_a_devolver;
-    // }
+
+    // borrar el ultimo elemento
+    if (iter->actual==iter->lista->ultimo_elemento &&
+        iter->lista->ultimo_elemento!=iter->lista->primer_elemento) {
+          printf("caso 2\n" );
+          // printf("entrando al if de borrar el ultmo\n");
+          nodo_t *nodo_aux = crear_nodo(NULL);
+          void *dato_a_devolver = iter->actual->dato;
+          nodo_aux->siguiente_nodo = iter->lista->ultimo_elemento;
+          free(nodo_aux->siguiente_nodo);
+          iter->lista->ultimo_elemento = iter->anterior;
+          iter->actual = iter->lista->ultimo_elemento;
+          iter->lista->ultimo_elemento->siguiente_nodo = NULL;
+          // lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
+          iter->lista->largo--;
+          // if (lista_esta_vacia(lista)) {
+          //     lista->ultimo_elemento = lista->primer_elemento;
+          // }
+          free(nodo_aux);
+        return dato_a_devolver;
+    }
+     else {
+        printf("caso 3\n" );
+        // return NULL;
+        // caso general
+        nodo_t *nodo_aux = crear_nodo(NULL);
+        void *dato_a_devolver = iter->actual->dato;
+        nodo_aux->siguiente_nodo = iter->actual;
+        if( iter->anterior) {
+            iter->anterior->siguiente_nodo = iter->actual->siguiente_nodo;
+        }
+        iter->lista->primer_elemento = iter->actual->siguiente_nodo;
+        iter->actual = iter->actual->siguiente_nodo;
+        // iter->lista->ultimo_elemento->siguiente_nodo = NULL;
+        // lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
+        // if (lista_esta_vacia(lista)) {
+        //     lista->ultimo_elemento = lista->primer_elemento;
+        free(nodo_aux->siguiente_nodo);
+        free(nodo_aux);
+        // }
+        iter->lista->largo--;
+      return dato_a_devolver;
+    }
 
     return NULL;
 }

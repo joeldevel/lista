@@ -270,19 +270,31 @@ static void prueba_iter_externo_borrar_al_crear(void) {
     int items[] = {10,20,340,39};
     //
     lista_iter_insertar(iter, &items[0]);
-    // lista_iter_insertar(iter, &items[1]);
-    // lista_iter_insertar(iter, &items[2]);
     // lista_iter_insertar(iter, &items[3]);
     ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+
     // print_test("Insertar al ser creado inserta al principio", ok);
-    print_test("se borro el dato ", lista_iter_borrar(iter));
-    // ok = *(int*)lista_ver_primero(lista)==items[2];
-    // print_test("Borrar al principio,", ok);
+    lista_iter_borrar(iter);
+    print_test("Lista esta vacia: ", lista_esta_vacia(lista));
+
+    lista_iter_insertar(iter, &items[1]);
+    lista_iter_insertar(iter, &items[2]);
+    lista_iter_insertar(iter, &items[3]);
+    lista_iter_borrar(iter);
+    print_test("Lista NO est vacia: ", !lista_esta_vacia(lista));
+    ok = *(int*)lista_ver_primero(lista) == items[2];
+    ok &= *(int*)lista_ver_ultimo(lista) == items[1];
+    print_test("Elemento correcto en lista ", ok);
+
+    print_test("avanza? ",lista_iter_avanzar(iter));
+    printf("borrando %d\n", *(int*)lista_iter_borrar(iter));
+    ok = lista_ver_ultimo(lista) == lista_ver_primero(lista);
+    ok = *(int*)lista_iter_ver_actual(iter) == items[2];
+    print_test("borrar ultimo elemento", ok);
 
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
-/*
 // Remover el último elemento con el iterador cambia el último de la lista.
 static void prueba_iter_externo_borrar_al_final(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR AL FINAL\n");
@@ -301,17 +313,18 @@ static void prueba_iter_externo_borrar_al_final(void) {
     lista_iter_avanzar(iter);
     lista_iter_avanzar(iter);
     ok = lista_iter_ver_actual(iter)==lista_ver_ultimo(lista);
-    print_test("Insertar al final,", ok);
+    print_test("Insertar al final ", ok);
 
-    int * borrado = (int*)lista_iter_borrar(iter);
-    ok = *borrado == items[0];
-    print_test("devuelve el del final,", ok);
-    ok = *(int*)lista_ver_ultimo(lista)==items[1];
-    print_test("Borrar al final,", ok);
+    int borrado = *(int*)lista_iter_borrar(iter);
+    ok = borrado == items[0];
+    printf("(borrado=%d)\n",borrado );
+    print_test("devuelve el del final,", ok );
+
 
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
+/*
 // Verificar que al remover un elemento del medio, este no está.
 static void prueba_iter_externo_borrar_medio(void) {
   printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR EN MEDIO\n");
@@ -414,7 +427,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_imprimir_iter_externo();
     prueba_iter_externo_insertar_al_ser_creado();
     prueba_iter_externo_insertar_al_final();
-    // prueba_iter_externo_borrar_al_final();
+    prueba_iter_externo_borrar_al_final();
     prueba_iter_externo_insertar_medio();
     prueba_iter_externo_borrar_al_crear();
     // prueba_iter_externo_borrar_medio();

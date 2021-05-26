@@ -108,7 +108,7 @@ bool lista_iter_insertar(lista_iter_t *iter, void *dato);
 
 // Borra el dato en la posicion actual del iterador.
 // Pre: el iterador iter fue creado.
-// Post: devuelve true si pudo borrar el dato, en caso contrario false.
+// Post: devuelve el dato si pudo borrar el dato, en caso contrario NULL.
 void *lista_iter_borrar(lista_iter_t *iter);
 
 // Devuelve el largo de la lista sobre la que el iterador trabaja.
