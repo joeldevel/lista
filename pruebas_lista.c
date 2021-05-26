@@ -258,28 +258,31 @@ static void prueba_iter_externo_insertar_medio(void) {
   lista_destruir(lista, NULL);
   lista_iter_destruir(iter);
 }
-/*
 // Al remover el elemento cuando se crea el iterador, cambia el primer elemento de la lista.
 static void prueba_iter_externo_borrar_al_crear(void) {
-    printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR AL CREAR\n");
+    printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR\n");
 
     lista_t *lista = lista_crear();
     lista_iter_t * iter = lista_iter_crear(lista);
+    bool ok = true;
+    ok &= !lista_iter_borrar(iter);
+    print_test("NO se puede borrar en lista vacia ", ok);
     int items[] = {10,20,340,39};
-
+    //
     lista_iter_insertar(iter, &items[0]);
-    lista_iter_insertar(iter, &items[1]);
-    lista_iter_insertar(iter, &items[2]);
-    lista_iter_insertar(iter, &items[3]);
-    bool ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
-    print_test("Insertar al ser creado inserta al principio", ok);
-    lista_iter_borrar(iter);
-    ok = *(int*)lista_ver_primero(lista)==items[2];
-    print_test("Borrar al principio,", ok);
+    // lista_iter_insertar(iter, &items[1]);
+    // lista_iter_insertar(iter, &items[2]);
+    // lista_iter_insertar(iter, &items[3]);
+    ok = lista_iter_ver_actual(iter)==lista_ver_primero(lista);
+    // print_test("Insertar al ser creado inserta al principio", ok);
+    print_test("se borro el dato ", lista_iter_borrar(iter));
+    // ok = *(int*)lista_ver_primero(lista)==items[2];
+    // print_test("Borrar al principio,", ok);
 
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
+/*
 // Remover el último elemento con el iterador cambia el último de la lista.
 static void prueba_iter_externo_borrar_al_final(void) {
     printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR AL FINAL\n");
@@ -413,7 +416,7 @@ void pruebas_lista_estudiante() {
     prueba_iter_externo_insertar_al_final();
     // prueba_iter_externo_borrar_al_final();
     prueba_iter_externo_insertar_medio();
-    // prueba_iter_externo_borrar_al_crear();
+    prueba_iter_externo_borrar_al_crear();
     // prueba_iter_externo_borrar_medio();
     // prueba_iter_externo_borrar();
     prueba_iter_interno();
