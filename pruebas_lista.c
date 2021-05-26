@@ -324,7 +324,6 @@ static void prueba_iter_externo_borrar_al_final(void) {
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
-/*
 // Verificar que al remover un elemento del medio, este no está.
 static void prueba_iter_externo_borrar_medio(void) {
   printf("INICIO DE PRUEBAS ITERADOR EXTERNO BORRAR EN MEDIO\n");
@@ -359,14 +358,22 @@ static void prueba_iter_externo_borrar(void) {
     lista_iter_insertar(iter, &items[0]);
     lista_iter_insertar(iter, &items[1]);
     lista_iter_insertar(iter, &items[2]);
+
     lista_iter_avanzar(iter);
+    print_test("actual es ok", *(int*)lista_iter_ver_actual(iter)==items[1]);
     lista_iter_borrar(iter);
+    print_test("actual es ok", *(int*)lista_iter_ver_actual(iter)==items[0]);
+    lista_iter_borrar(iter);
+    print_test("actual es ok", *(int*)lista_iter_ver_actual(iter)==items[2]);
+
+    print_test("la lista no esta vacia ", !lista_esta_vacia(lista));
     lista_iter_borrar(iter);
     print_test("lista al final " ,lista_iter_al_final(iter));
-    print_test("la lista no esta vacia ", !lista_esta_vacia(lista));
+    print_test("la lista esta vacia ", lista_esta_vacia(lista));
     lista_destruir(lista, NULL);
     lista_iter_destruir(iter);
 }
+/*
 */
 //  funciones para probar el iterador interno
 // funcion con corte
@@ -430,8 +437,8 @@ void pruebas_lista_estudiante() {
     prueba_iter_externo_borrar_al_final();
     prueba_iter_externo_insertar_medio();
     prueba_iter_externo_borrar_al_crear();
-    // prueba_iter_externo_borrar_medio();
-    // prueba_iter_externo_borrar();
+    prueba_iter_externo_borrar_medio();
+    prueba_iter_externo_borrar();
     prueba_iter_interno();
 }
 

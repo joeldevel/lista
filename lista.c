@@ -174,7 +174,7 @@ void *lista_iter_ver_actual(const lista_iter_t *iter) {
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
     // tal vez esto es redundante
-    if (lista_esta_vacia(iter->lista)) return true;
+    // if (lista_esta_vacia(iter->lista)) return true;
     // printf("lista_iter_al_final, iter->actual->dato =%lu\n", *(size_t*)iter->actual->dato);
     // if (iter->actual->dato==NULL && iter->anterior) return true;
     return iter->actual == NULL;
@@ -264,7 +264,7 @@ void *lista_iter_borrar(lista_iter_t *iter) {
           //     lista->ultimo_elemento = lista->primer_elemento;
           // }
           free(nodo_aux);
-        return dato_a_devolver;
+          return dato_a_devolver;
     }
      else {
         printf("caso 3\n" );
@@ -274,14 +274,14 @@ void *lista_iter_borrar(lista_iter_t *iter) {
         void *dato_a_devolver = iter->actual->dato;
         nodo_aux->siguiente_nodo = iter->actual;
         if( iter->anterior) {
+            printf("hay anterior\n" );
             iter->anterior->siguiente_nodo = iter->actual->siguiente_nodo;
+        } else {
+            // reacomodar la lista
+            iter->lista->primer_elemento = iter->actual->siguiente_nodo;
         }
-        iter->lista->primer_elemento = iter->actual->siguiente_nodo;
         iter->actual = iter->actual->siguiente_nodo;
-        // iter->lista->ultimo_elemento->siguiente_nodo = NULL;
-        // lista->primer_elemento = lista->primer_elemento->siguiente_nodo;
-        // if (lista_esta_vacia(lista)) {
-        //     lista->ultimo_elemento = lista->primer_elemento;
+
         free(nodo_aux->siguiente_nodo);
         free(nodo_aux);
         // }
